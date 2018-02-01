@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Bullet
   - Bullet2
+  - Bullet1
   layers:
   - Default
   - TransparentFX

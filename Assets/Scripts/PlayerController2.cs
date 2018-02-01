@@ -23,7 +23,7 @@ public class PlayerController2 : MonoBehaviour {
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.CapsLock))
         {
             direction = gameObject.transform.position - directionPoint.transform.position;
             direction.Normalize();
@@ -36,27 +36,27 @@ public class PlayerController2 : MonoBehaviour {
         {
             pressControllerUp = true;
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow))
+		if (Input.GetKeyUp(KeyCode.UpArrow))
         {
             pressControllerUp = false;
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+		if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             pressControllerLeft = true;
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
+		if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
             pressControllerLeft = false;
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+		if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             pressControllerRight = true;
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow))
+		if (Input.GetKeyUp(KeyCode.RightArrow))
         {
             pressControllerRight = false;
         }
-        if (pressControllerUp)
+        if (pressControllerUp) 
         {
             direction = gameObject.transform.position - directionPoint.transform.position;
             direction.Normalize();
@@ -76,7 +76,7 @@ public class PlayerController2 : MonoBehaviour {
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Bullet")
+        if (other.gameObject.tag == "Bullet1")
         {
             Destroy(gameObject);
             Destroy(other.gameObject);
