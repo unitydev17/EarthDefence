@@ -77,17 +77,16 @@ public class PathFinder
 			}
 
 
-
 			foreach (Path toRemove in pathsToRemove) {
 				paths.Remove (toRemove);
 			}
-				
+
 		}
 		return paths.ToArray();
 	}
 
 
-	private static bool IsTargetVisible(Vector3 sourcePosition, Transform target) {
+	public static bool IsTargetVisible(Vector3 sourcePosition, Transform target) {
 		Vector3 direction = target.position - sourcePosition;
 		float distance = Vector3.Distance (sourcePosition, target.position);
 		RaycastHit hit;
