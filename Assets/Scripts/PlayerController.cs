@@ -1,84 +1,70 @@
-﻿ using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+	public const float BULLET_SPAWN_DISTANCE = 0.5f;
+
     public Rigidbody player;
     public float speed;
     public float bulletSpeed;
     public GameObject bullet;
-    public GameObject directionPoint;
     public Transform bulletSpawn;
-    private Vector3 direction;
-    private float playerRotate;
 
-    private bool pressControllerW;
-    private bool pressControllerA;
-    private bool pressControllerD;
+	private float rotationY;
 
-    private void Start()
-    {
-        playerRotate = player.transform.eulerAngles.y;
-    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.CapsLock))
+		if (Input.GetMouseButtonDown(0))
         {
-            direction = gameObject.transform.position - directionPoint.transform.position;
-            direction.Normalize();
-            direction.y = 0;
-            GameObject bulletClone = Instantiate(bullet, bulletSpawn.position, Quaternion.identity);
+			Vector3 bulletSpawnPosition = transform.position + transform.forward * BULLET_SPAWN_DISTANCE;
+			GameObject bulletClone = Instantiate(bullet, bulletSpawnPosition, Quaternion.identity);
             Rigidbody bulletRig = bulletClone.GetComponent<Rigidbody>();
-            bulletRig.velocity = -direction * bulletSpeed;
+			bulletRig.velocity = transform.forward * bulletSpeed;
         }
-        if (Input.GetKeyDown(KeyCode.W))
+
+		if (Input.GetKey(KeyCode.W))
         {
-            pressControllerW = true;
+			player.GetComponent<Rigidbody>().AddForce(transform.forward * speed);
         }
-        if (Input.GetKeyUp(KeyCode.W))
+
+		if (Input.GetKey(KeyCode.S))
+		{
+			player.GetComponent<Rigidbody>().AddForce(-transform.forward * speed);
+		}
+
+
+		if (Input.GetKey(KeyCode.D))
         {
-            pressControllerW = false;
+			player.transform.RotateAround (transform.position, Vector3.up, 2);
         }
-        if (Input.GetKeyDown(KeyCode.A))
+
+		if (Input.GetKey(KeyCode.A))
         {
-            pressControllerA = true;
-        }
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            pressControllerA = false;
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            pressControllerD = true;
-        }
-        if (Input.GetKeyUp(KeyCode.D))
-        {
-            pressControllerD = false;
-        }
-        if (pressControllerW) 
-        {
-            direction = gameObject.transform.position - directionPoint.transform.position;
-            direction.Normalize();
-            direction.y = 0;
-            player.velocity = -direction * speed;
-        }
-        if (pressControllerD)
-        {
-            player.transform.eulerAngles = new Vector3(0, playerRotate + 2, 0);
-            playerRotate += 2;
-        }
-        if (pressControllerA)
-        {
-            player.transform.eulerAngles = new Vector3(0, playerRotate - 2, 0);
-            playerRotate -= 2;
-        }
+			player.transform.RotateAround (transform.position, Vector3.up, -2);
+		}
+
+		HandleMouseDirections ();
+
     }
+
+	private void HandleMouseDirections() {
+		float dx = Input.GetAxis ("Mouse X") * 3;
+		float dy = Input.GetAxis ("Mouse Y") * 3;
+		float rotationX = transform.localEulerAngles.y + dx;
+		rotationY += dy;
+		transform.localEulerAngles = new Vector3 (-rotationY, rotationX, 0);
+	}
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Bullet2")
         {
-            Destroy(gameObject);
+			Debug.Log (Time.time + "Shot!");
+            //Destroy(gameObject);
             Destroy(other.gameObject);
         }
     }
