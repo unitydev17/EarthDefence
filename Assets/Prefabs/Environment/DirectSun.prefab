@@ -153,12 +153,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1966645606903668}
   m_LocalRotation: {x: 0.69388944, y: 0.13607901, z: -0.69388944, w: -0.13607901}
-  m_LocalPosition: {x: 0, y: -0.19999999, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 0.02000001, y: 0.020000018, z: 0.020000009}
   m_Children: []
   m_Father: {fileID: 4335721913727374}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 180, y: 90, z: -22.190979}
+  m_LocalEulerAnglesHint: {x: 180, y: 90, z: -22.19098}
 --- !u!4 &4335721913727374
 Transform:
   m_ObjectHideFlags: 1
@@ -186,7 +186,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1616886185272616}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.19999999, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 0.02, y: 0.020000009, z: 0.020000009}
   m_Children: []
   m_Father: {fileID: 4335721913727374}
@@ -199,7 +199,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1499885870901760}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: -0.19999999, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_Children: []
   m_Father: {fileID: 4335721913727374}
@@ -225,7 +225,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1986757825733508}
   m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: -0.5}
-  m_LocalPosition: {x: 0, y: -0.19999999, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_Children: []
   m_Father: {fileID: 4335721913727374}
@@ -238,7 +238,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1712920277628228}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.19999999, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 0.020000009, y: 0.02, z: 0.020000009}
   m_Children: []
   m_Father: {fileID: 4335721913727374}
@@ -320,7 +320,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.80075324, b: 0.25735295, a: 1}
+  m_Color: {r: 1, g: 0.8007533, b: 0.25735295, a: 1}
   m_Intensity: 0.5
   m_Range: 1000
   m_SpotAngle: 30
@@ -356,7 +356,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.80075324, b: 0.25735295, a: 1}
+  m_Color: {r: 1, g: 0.8007533, b: 0.25735295, a: 1}
   m_Intensity: 0.5
   m_Range: 1000
   m_SpotAngle: 30
@@ -392,7 +392,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.80075324, b: 0.25735295, a: 1}
+  m_Color: {r: 1, g: 0.8007533, b: 0.25735295, a: 1}
   m_Intensity: 0.5
   m_Range: 1000
   m_SpotAngle: 30
@@ -428,7 +428,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.80075324, b: 0.25735295, a: 1}
+  m_Color: {r: 1, g: 0.8007533, b: 0.25735295, a: 1}
   m_Intensity: 0.5
   m_Range: 1000
   m_SpotAngle: 30
@@ -464,7 +464,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.80075324, b: 0.25735295, a: 1}
+  m_Color: {r: 1, g: 0.8007533, b: 0.25735295, a: 1}
   m_Intensity: 0.5
   m_Range: 1000
   m_SpotAngle: 30
@@ -500,7 +500,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.80075324, b: 0.25735295, a: 1}
+  m_Color: {r: 1, g: 0.8007533, b: 0.25735295, a: 1}
   m_Intensity: 0.5
   m_Range: 1000
   m_SpotAngle: 30
@@ -571,13 +571,37 @@ ParticleSystem:
     minScalar: 0
     maxCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     minCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -1448,8 +1472,8 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.9632353, g: 0.8671072, b: 0.09207394, a: 1}
-        key1: {r: 0.9921875, g: 0.8565904, b: 0.21065027, a: 0.75686276}
-        key2: {r: 1, g: 0.85375255, b: 0.24264705, a: 0}
+        key1: {r: 0.9921875, g: 0.8565904, b: 0.21065028, a: 0.7568627}
+        key2: {r: 1, g: 0.85375255, b: 0.24264704, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -3589,13 +3613,37 @@ ParticleSystem:
     minScalar: 0
     maxCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     minCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -4465,7 +4513,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.99264705, g: 0.93828297, b: 0.20436853, a: 1}
+        key0: {r: 0.99264705, g: 0.93828297, b: 0.20436852, a: 1}
         key1: {r: 0.9927552, g: 0.93919057, b: 0.216069, a: 1}
         key2: {r: 1, g: 1, b: 1, a: 0}
         key3: {r: 0.9632353, g: 0.872, b: 0.077908754, a: 0}

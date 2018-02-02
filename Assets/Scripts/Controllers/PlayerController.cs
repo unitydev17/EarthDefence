@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
 	{
 		Rigidbody rigidBody = GetComponent<Rigidbody>();
 		if (Mathf.Abs(rigidBody.velocity.magnitude) > SHIP_STOPPED_SPEED) {
-			rigidBody.AddForce(-transform.forward * SHIP_SPEED);
+			rigidBody.AddForce(-rigidBody.velocity.normalized * SHIP_SPEED);
 			return;
 		}
 		rigidBody.velocity = Vector3.zero;
