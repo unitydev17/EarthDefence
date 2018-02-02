@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: SunShine
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+  m_ShaderKeywords: _EMISSION _GLOSSYREFLECTIONS_OFF _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_CustomRenderQueue: -1
@@ -54,14 +54,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BumpScale: 10
+    - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _GlossMapScale: 1
+    - _GlossMapScale: 0.752
     - _Glossiness: 1
-    - _GlossyReflections: 1
-    - _Metallic: 0.552
+    - _GlossyReflections: 0
+    - _Metallic: 0.628
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.058
@@ -73,5 +73,5 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.9338235, g: 0.80776685, b: 0.10299523, a: 1}
-    - _EmissionColor: {r: 0.8897059, g: 0.607, b: 0.013083923, a: 1}
+    - _EmissionColor: {r: 1, g: 0.68224794, b: 0.014705896, a: 1}
     - _SpecColor: {r: 1, g: 0.9083165, b: 0.16911763, a: 1}
