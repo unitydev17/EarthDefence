@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3ccee0bae1f5ca44f982bdf06bb8a580
+timeCreated: 1517852208
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - enemyExplosion: {fileID: 1874506025603560, guid: 781f1c1e896dacc44aa5e9e1ecce50a2,
+      type: 2}
+  - bulletPrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
