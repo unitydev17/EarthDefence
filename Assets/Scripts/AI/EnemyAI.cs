@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : CommonShipController
 {
 
 	private const string PLAYER_TAG = "Player";
@@ -12,8 +12,10 @@ public class EnemyAI : MonoBehaviour
 	private const float ROTATION_SPEED = 1f;
 	private const float CHECK_POINT_SIZE = 3f;
 	private const float FIRE_FREQUENCY = 1f;
-	private const float BULLET_VELOCITY = 200f;
-	private const float MOVE_VELOCITY = 0.2f;
+	private const float MOVE_VELOCITY = 10f;//0.2f; // impulse mode
+
+	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
+	private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
 
 
 	private enum State
@@ -24,9 +26,7 @@ public class EnemyAI : MonoBehaviour
 		TargetVisible,
 		Fire
 	}
-
-
-	public GameObject bulletPrefab;
+		
 
 	private GameObject player;
 	private State state;
@@ -35,8 +35,9 @@ public class EnemyAI : MonoBehaviour
 	private bool isStraightVisibility;
 
 
-	void Start()
+	protected override void Start()
 	{
+		base.Start();
 		player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
 		state = State.Idle;
 		path = new Path();
@@ -94,21 +95,12 @@ public class EnemyAI : MonoBehaviour
 				float deltaTime = Time.time - time;
 				if (deltaTime > FIRE_FREQUENCY) {
 					if (!CheckPlayerDestroyed()) {
-						Fire();
+						Fire(leftGunPosition, rightGunPosition);
 					}
 					time = Time.time;
 				}
 			}
 		}
-	}
-
-
-	void Fire()
-	{
-		Vector3 bulletSpawnPosition = transform.position + transform.forward * PlayerController.BULLET_SPAWN_DISTANCE;
-		GameObject bulletClone = Instantiate(bulletPrefab, bulletSpawnPosition, Quaternion.identity);
-		Rigidbody bulletRig = bulletClone.GetComponent<Rigidbody>();
-		bulletRig.velocity = transform.forward * BULLET_VELOCITY;
 	}
 
 
@@ -175,7 +167,7 @@ public class EnemyAI : MonoBehaviour
 		// move
 		float targetDistance = Vector3.Distance(transform.position, player.transform.position);
 		if (targetDistance > MIN_ATTACK_DISTANCE) {
-			GetComponent<Rigidbody>().AddForce(direction.normalized * MOVE_VELOCITY, ForceMode.Impulse);
+			GetComponent<Rigidbody>().AddForce(direction.normalized * MOVE_VELOCITY, ForceMode.Force);
 		}
 
 		if (State.TargetVisible != state) {
