@@ -28,7 +28,6 @@ public class EnemyAI : CommonShipController
 	}
 		
 
-	private GameObject player;
 	private State state;
 	private Path path;
 	private float time;
@@ -38,7 +37,6 @@ public class EnemyAI : CommonShipController
 	protected override void Start()
 	{
 		base.Start();
-		player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
 		state = State.Idle;
 		path = new Path();
 		isStraightVisibility = false;

@@ -16,7 +16,7 @@ public class PlayerController : CommonShipController
 	private const float SHIP_SPEED = 10f;
 	private const float SHIP_STOPPED_SPEED = 1f;
 	private const int MOUSE_AMPLIFIER = 3;
-	private const int CHAIN_FIRE_NUMBERS = 3;
+	private const int CHAIN_FIRE_NUMBERS = 5;
 
 	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
 	private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
@@ -38,7 +38,7 @@ public class PlayerController : CommonShipController
 	private void ProcessActions() {
 		if (GunState.Fire == gunState) {
 				
-			if (Time.time - startChainTime > 0.05f) {
+			if (Time.time - startChainTime > 0.01f) {
 
 				if (++chainFireNumber == CHAIN_FIRE_NUMBERS) {
 					gunState = GunState.Idle;
@@ -47,6 +47,7 @@ public class PlayerController : CommonShipController
 
 				startChainTime = Time.time;
 				Fire(leftGunPosition, rightGunPosition);
+				SoundController.instance.PlayerFire();
 			}
 		}
 	}

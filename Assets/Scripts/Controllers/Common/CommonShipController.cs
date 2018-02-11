@@ -16,6 +16,7 @@ public class CommonShipController : MonoBehaviour {
 	public GameObject bulletPrefab;
 	protected Rigidbody rigidBody;
 
+	protected GameObject player;
 	private float health;
 
 
@@ -23,6 +24,9 @@ public class CommonShipController : MonoBehaviour {
 		health = 100f;
 		rigidBody = GetComponent<Rigidbody>();
 		rigidBody.useGravity = false;
+		if (this is EnemyAI) {
+			player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
+		}
 	}
 
 	protected void Fire(Vector3 leftGunPosition, Vector3 rightGunPosition)
@@ -46,6 +50,7 @@ public class CommonShipController : MonoBehaviour {
 		if (gameObject.CompareTag(PLAYER_TAG)) {
 			if (ENEMY_BULLET_TAG == other.gameObject.tag) {
 				health -= ENEMY_BULLET_DAMAGE;
+				SoundController.instance.ShipShoted();
 			}
 		} else {
 			// enemy was shooted
@@ -53,7 +58,9 @@ public class CommonShipController : MonoBehaviour {
 				health -= PLAYER_BULLET_DAMAGE;
 			}
 			if (health <= 0) {
-				Explode();
+				ExplodeEnemy();
+				var distance = Vector3.Distance(transform.position, player.transform.position);
+				SoundController.instance.EnemyExplosion(distance);
 			}
 		}
 
@@ -61,7 +68,7 @@ public class CommonShipController : MonoBehaviour {
 	}
 
 
-	void Explode() {
+	void ExplodeEnemy() {
 		gameObject.GetComponent<Collider>().enabled = false;
 		gameObject.GetComponent<Renderer>().enabled = false;
 		GameObject explosionParent = Instantiate(enemyExplosion, transform.position, Quaternion.identity);
@@ -74,6 +81,7 @@ public class CommonShipController : MonoBehaviour {
 		Destroy(explosionParent, duration);
 		Destroy(gameObject, duration);
 	}
+
 
 	IEnumerator FadeLight(Light light, float fadeDuration) {
 		float startIntensity = light.intensity;
