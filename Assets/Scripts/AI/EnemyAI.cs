@@ -12,7 +12,7 @@ public class EnemyAI : CommonShipController
 	private const float ROTATION_SPEED = 1f;
 	private const float CHECK_POINT_SIZE = 3f;
 	private const float FIRE_FREQUENCY = 1f;
-	private const float MOVE_VELOCITY = 10f;//0.2f; // impulse mode
+	private const float MOVE_VELOCITY = 0.5f; // impulse mode
 
 	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
 	private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
@@ -40,12 +40,13 @@ public class EnemyAI : CommonShipController
 		state = State.Idle;
 		path = new Path();
 		isStraightVisibility = false;
-		GameController.eventBus += ProcessCommand;
 	}
 
 
-	public void ProcessCommand(string command)
+	public override void ProcessCommand(string command, object param)
 	{
+		base.ProcessCommand(command, param);
+
 		if (GameController.ATTACK_COMMAND == command) {
 			state = State.Commanded;
 		}
@@ -165,7 +166,7 @@ public class EnemyAI : CommonShipController
 		// move
 		float targetDistance = Vector3.Distance(transform.position, player.transform.position);
 		if (targetDistance > MIN_ATTACK_DISTANCE) {
-			GetComponent<Rigidbody>().AddForce(direction.normalized * MOVE_VELOCITY, ForceMode.Force);
+			GetComponent<Rigidbody>().AddForce(direction.normalized * MOVE_VELOCITY, ForceMode.Impulse);
 		}
 
 		if (State.TargetVisible != state) {

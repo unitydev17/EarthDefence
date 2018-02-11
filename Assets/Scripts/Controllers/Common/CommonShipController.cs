@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [RequireComponent(typeof(Rigidbody))]
-public class CommonShipController : MonoBehaviour {
+public class CommonShipController : MonoBehaviour
+{
 
 	private const string PLAYER_TAG = "Player";
 	private const string ENEMY_BULLET_TAG = "EnemyBullet";
@@ -11,6 +13,8 @@ public class CommonShipController : MonoBehaviour {
 	private const float BULLET_SPEED = 200f;
 	private const float ENEMY_BULLET_DAMAGE = 1f;
 	private const float PLAYER_BULLET_DAMAGE = 20f;
+	private const float EXPLOSION_MAX_DISTANCE = 100f;
+	private const float EXPLOSION_FORCE = 300f;
 
 	public GameObject enemyExplosion;
 	public GameObject bulletPrefab;
@@ -20,14 +24,37 @@ public class CommonShipController : MonoBehaviour {
 	private float health;
 
 
-	protected virtual void Start() {
+	protected virtual void Start()
+	{
 		health = 100f;
 		rigidBody = GetComponent<Rigidbody>();
 		rigidBody.useGravity = false;
 		if (this is EnemyAI) {
 			player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
 		}
+		GameController.eventBus += ProcessCommand;
 	}
+
+
+	public virtual void ProcessCommand(string command, object param)
+	{
+		if (GameController.EXPLOSION_IMPACT_COMMAND == command) {
+			ExplosionImpact(param);
+		}
+	}
+
+
+	void ExplosionImpact(object param)
+	{
+		Vector3 expCenter = (Vector3)param;
+		float distance = Vector3.Distance(expCenter, transform.position);
+		distance = Mathf.Clamp(distance, 0, EXPLOSION_MAX_DISTANCE);
+		Vector3 direction = (transform.position - expCenter).normalized;
+		Vector3 expForce = EXPLOSION_FORCE * direction * (1 - distance / EXPLOSION_MAX_DISTANCE);
+		rigidBody.AddForce(expForce);
+		rigidBody.AddTorque(expForce);
+	}
+
 
 	protected void Fire(Vector3 leftGunPosition, Vector3 rightGunPosition)
 	{
@@ -36,9 +63,10 @@ public class CommonShipController : MonoBehaviour {
 	}
 
 
-	void FireLazer(Vector3 position) {
+	void FireLazer(Vector3 position)
+	{
 		Vector3 gunPositionAbsolute = transform.TransformPoint(position);
-		GameObject bullet = Instantiate( bulletPrefab, gunPositionAbsolute, Quaternion.identity);
+		GameObject bullet = Instantiate(bulletPrefab, gunPositionAbsolute, Quaternion.identity);
 		Quaternion bulletRotation = Quaternion.FromToRotation(bullet.transform.up, transform.forward);
 		bullet.transform.localRotation = bulletRotation;
 		bullet.GetComponent<Rigidbody>().velocity = transform.forward * BULLET_SPEED + rigidBody.velocity;
@@ -59,8 +87,6 @@ public class CommonShipController : MonoBehaviour {
 			}
 			if (health <= 0) {
 				ExplodeEnemy();
-				var distance = Vector3.Distance(transform.position, player.transform.position);
-				SoundController.instance.EnemyExplosion(distance);
 			}
 		}
 
@@ -68,7 +94,16 @@ public class CommonShipController : MonoBehaviour {
 	}
 
 
-	void ExplodeEnemy() {
+	void ExplosionSFX()
+	{
+		var distance = Vector3.Distance(transform.position, player.transform.position);
+		SoundController.instance.EnemyExplosion(distance);
+	}
+
+
+	void ExplodeEnemy()
+	{
+		ExplosionSFX();
 		gameObject.GetComponent<Collider>().enabled = false;
 		gameObject.GetComponent<Renderer>().enabled = false;
 		GameObject explosionParent = Instantiate(enemyExplosion, transform.position, Quaternion.identity);
@@ -80,10 +115,14 @@ public class CommonShipController : MonoBehaviour {
 		StartCoroutine(FadeLight(light, duration));
 		Destroy(explosionParent, duration);
 		Destroy(gameObject, duration);
+
+		GameController.eventBus -= ProcessCommand;
+		GameController.ExplosionImpact(transform.position);
 	}
 
 
-	IEnumerator FadeLight(Light light, float fadeDuration) {
+	IEnumerator FadeLight(Light light, float fadeDuration)
+	{
 		float startIntensity = light.intensity;
 		for (float t = 0; t < 1.0f; t += Time.deltaTime / fadeDuration) {
 			light.intensity = startIntensity * (1 - t);

@@ -13,10 +13,10 @@ public class PlayerController : CommonShipController
 	}
 
 	public const float BULLET_SPAWN_DISTANCE = 0.5f;
-	private const float SHIP_SPEED = 10f;
+	private const float SHIP_SPEED = 0.5f;
 	private const float SHIP_STOPPED_SPEED = 1f;
 	private const int MOUSE_AMPLIFIER = 3;
-	private const int CHAIN_FIRE_NUMBERS = 5;
+	private const int CHAIN_FIRE_NUMBERS = 3;
 
 	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
 	private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
@@ -38,7 +38,7 @@ public class PlayerController : CommonShipController
 	private void ProcessActions() {
 		if (GunState.Fire == gunState) {
 				
-			if (Time.time - startChainTime > 0.01f) {
+			if (Time.time - startChainTime > 0.02f) {
 
 				if (++chainFireNumber == CHAIN_FIRE_NUMBERS) {
 					gunState = GunState.Idle;
@@ -62,7 +62,7 @@ public class PlayerController : CommonShipController
 
 		// Forward
 		if (Input.GetKey(KeyCode.W)) {
-			rigidBody.AddForce(transform.forward * SHIP_SPEED);
+			rigidBody.AddForce(transform.forward * SHIP_SPEED, ForceMode.Impulse);
 		}
 
 		// Brake
@@ -83,7 +83,7 @@ public class PlayerController : CommonShipController
 	void Brake()
 	{
 		if (Mathf.Abs(rigidBody.velocity.magnitude) > SHIP_STOPPED_SPEED) {
-			rigidBody.AddForce(-rigidBody.velocity.normalized * SHIP_SPEED);
+			rigidBody.AddForce(-rigidBody.velocity.normalized * SHIP_SPEED, ForceMode.Impulse);
 			return;
 		}
 		rigidBody.velocity = Vector3.zero;
@@ -96,7 +96,7 @@ public class PlayerController : CommonShipController
 	{
 		float dx = Input.GetAxis("Mouse X") * MOUSE_AMPLIFIER;
 		float dy = Input.GetAxis("Mouse Y") * MOUSE_AMPLIFIER;
-		transform.RotateAround(transform.position, Vector3.up, dx);
+		transform.RotateAround(transform.position, transform.up, dx);
 		transform.RotateAround(transform.position, transform.right, -dy);
 	}
 
