@@ -1,4 +1,4 @@
-# Space War - Shooter 3D
+# Earth Defence - 3D shooter
 
 Космический шутер - Earth defence.
 
