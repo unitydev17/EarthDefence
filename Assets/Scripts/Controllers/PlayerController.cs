@@ -13,7 +13,7 @@ public class PlayerController : CommonShipController
 	}
 
 	public const float BULLET_SPAWN_DISTANCE = 0.5f;
-	private const float SHIP_SPEED = 0.5f;
+	private const float SHIP_SPEED = 1f;
 	private const float SHIP_STOPPED_SPEED = 1f;
 	private const int MOUSE_AMPLIFIER = 3;
 	private const int CHAIN_FIRE_NUMBERS = 3;
@@ -72,10 +72,12 @@ public class PlayerController : CommonShipController
 
 		// Right incline
 		if (Input.GetKey(KeyCode.D)) {
+			transform.RotateAround(transform.position, transform.forward, -1f);
 		}
 
 		// Left incline
 		if (Input.GetKey(KeyCode.A)) {
+			transform.RotateAround(transform.position, transform.forward, 1f);
 		}		
 	}
 
