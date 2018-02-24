@@ -27,7 +27,7 @@ public class SoundController : MonoBehaviour
 
 	public void PlayerFire()
 	{
-		audioSource.volume = 0.8f;
+		audioSource.volume = 0.1f; //does not affect
 		audioSource.PlayOneShot(fireClip);
 	}
 
