@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
 public class PlayerController : CommonShipController
 {
 
@@ -27,17 +28,6 @@ public class PlayerController : CommonShipController
 	private int chainFireNumber;
 	private GunState gunState = GunState.Idle;
 
-	private Quaternion startRotation;
-	public static event Action cameraActions;
-
-
-
-
-	void Start() {
-		base.Start();
-		startRotation = transform.rotation;
-	}
-
 
 	private void Update()
 	{
@@ -45,7 +35,9 @@ public class PlayerController : CommonShipController
 		ProcessActions();
 	}
 
-	private void LateUpdate() {
+
+	private void LateUpdate()
+	{
 		HandleMouseDirections();
 	}
 
@@ -112,43 +104,10 @@ public class PlayerController : CommonShipController
 
 	private void HandleMouseDirections()
 	{
-		//float dx = Input.GetAxis("Mouse X") * MOUSE_AMPLIFIER;
-		//float dy = Input.GetAxis("Mouse Y") * MOUSE_AMPLIFIER;
-		//transform.RotateAround(transform.position, transform.up, dx);
-		//transform.RotateAround(transform.position, transform.right, -dy);
 
-//		if (Input.GetMouseButtonDown(2)) {
-//			Vector3 mousePosWorld = Vector3.zero;
-//
-//			Plane plane = new Plane(transform.up, transform.position);
-//			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-//			float distance;
-//			if (plane.Raycast(ray, out distance)) {
-//				mousePosWorld = ray.GetPoint(distance);
-//			}
-//
-//			//Debug.DrawRay(Camera.main.transform.position, mousePosWorld);
-//
-//
-//			//transform.rotation = Quaternion.FromToRotation(transform.forward, newDirection);
-//		}
-
-
-
-
-		//Debug.DrawRay(transform.position, transform.up);
-
-		//if (Input.GetKeyDown(KeyCode.E)) {
-			var direction = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
-			transform.rotation = Quaternion.LookRotation(direction);
-		//}
-
-		//if (Input.GetKey(KeyCode.Q)) {
-			cameraActions.Invoke();
-		//}
-
-		//Debug.DrawRay(Camera.main.transform.position, Camera.main.ScreenPointToRay(Input.mousePosition).direction * 10f);
-
+		var crossHairPosition = CrossHairController.position;
+		var direction = Camera.main.ScreenPointToRay(crossHairPosition).direction;
+		transform.rotation = Quaternion.LookRotation(direction, transform.up);
 	}
 
 }
