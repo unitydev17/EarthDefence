@@ -6,6 +6,15 @@ using System;
 
 public class PlayerController : CommonShipController
 {
+	public static event Action<bool> eventHandlers;
+
+
+	public enum MoveState
+	{
+		Idle,
+		Accelerate
+	}
+
 
 	private enum GunState
 	{
@@ -69,9 +78,8 @@ public class PlayerController : CommonShipController
 		}
 
 		// Forward
-		if (Input.GetKey(KeyCode.W)) {
-			MoveForward();
-		}
+		ProcessMoveForward();
+
 
 		// Brake
 		if (Input.GetKey(KeyCode.S)) {
@@ -87,6 +95,21 @@ public class PlayerController : CommonShipController
 		if (Input.GetKey(KeyCode.A)) {
 			transform.RotateAround(transform.position, transform.forward, 1f);
 		}		
+	}
+
+
+	void ProcessMoveForward()
+	{
+		if (Input.GetKeyDown(KeyCode.W)) {
+			eventHandlers.Invoke(true);
+
+		} else if (Input.GetKeyUp(KeyCode.W)) {
+			eventHandlers.Invoke(false);
+		}
+
+		if (Input.GetKey(KeyCode.W)) {
+			MoveForward();
+		}
 	}
 
 
