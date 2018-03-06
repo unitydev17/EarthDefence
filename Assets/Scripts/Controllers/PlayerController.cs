@@ -37,6 +37,26 @@ public class PlayerController : CommonShipController
 	private int chainFireNumber;
 	private GunState gunState = GunState.Idle;
 
+	public GameObject centralEngine;
+	public GameObject leftEngine;
+	public GameObject rightEngine;
+
+	private ParticleSystem centralPS;
+	private ParticleSystem leftPS;
+	private ParticleSystem rightPS;
+
+	private float enginesForce;
+
+
+	void Start()
+	{
+		base.Start();
+		centralPS = centralEngine.GetComponent<ParticleSystem>();
+		leftPS = leftEngine.GetComponent<ParticleSystem>();
+		rightPS = rightEngine.GetComponent<ParticleSystem>();
+		enginesForce = 1;
+	}
+
 
 	private void Update()
 	{
@@ -102,9 +122,11 @@ public class PlayerController : CommonShipController
 	{
 		if (Input.GetKeyDown(KeyCode.W)) {
 			eventHandlers.Invoke(true);
+			StartEngines();
 
 		} else if (Input.GetKeyUp(KeyCode.W)) {
 			eventHandlers.Invoke(false);
+			StopEngines();
 		}
 
 		if (Input.GetKey(KeyCode.W)) {
@@ -117,6 +139,55 @@ public class PlayerController : CommonShipController
 	{
 		Vector3 forceForward = Vector3.Lerp(Vector3.zero, transform.forward * SHIP_SPEED, Time.deltaTime * SHIP_ACCELERATION);
 		rigidBody.AddForce(forceForward, ForceMode.Impulse);
+		EnginesForceUp();
+	}
+
+
+	void StartEngines()
+	{
+		StartParticle(centralPS);
+		StartParticle(leftPS);
+		StartParticle(rightPS);
+	}
+
+
+	void StartParticle(ParticleSystem ps)
+	{
+		ParticleSystem.MainModule main = ps.main;
+		ps.Play();
+	}
+
+
+	void StopEngines()
+	{
+		enginesForce = 1;
+		StopEngine(centralPS);
+		StopEngine(leftPS);
+		StopEngine(rightPS);
+	}
+
+
+	void StopEngine(ParticleSystem ps)
+	{
+		ParticleSystem.MainModule main = ps.main;
+		main.simulationSpeed = enginesForce;
+		ps.Stop();
+	}
+
+
+	void EnginesForceUp()
+	{
+		enginesForce += Time.deltaTime;
+		EngineForceUp(centralPS);
+		EngineForceUp(leftPS);
+		EngineForceUp(rightPS);
+	}
+
+
+	void EngineForceUp(ParticleSystem ps)
+	{
+		ParticleSystem.MainModule main = ps.main;
+		main.simulationSpeed = enginesForce;
 	}
 
 
