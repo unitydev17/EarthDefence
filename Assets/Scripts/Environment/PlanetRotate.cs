@@ -16,8 +16,7 @@ public class PlanetRotate : MonoBehaviour
 	{
 		transform.RotateAround(transform.position, Vector3.up, Time.deltaTime * selfRotationSpeed);
 		if (targetRotation) {
-			transform.RotateAround(targetRotation.position, Vector3.up, Time.deltaTime * targetRotationSpeed);
-			transform.RotateAround(targetRotation.position, Vector3.right, Time.deltaTime * targetRotationSpeed);
+			transform.RotateAround(targetRotation.position, targetRotation.up, Time.deltaTime * targetRotationSpeed);
 		}
 	}
 

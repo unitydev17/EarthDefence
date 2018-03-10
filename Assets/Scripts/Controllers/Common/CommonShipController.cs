@@ -16,8 +16,10 @@ public class CommonShipController : MonoBehaviour
 	private const float EXPLOSION_MAX_DISTANCE = 100f;
 	private const float EXPLOSION_FORCE = 300f;
 
-	public GameObject enemyExplosion;
+	public GameObject explosionPrefab;
 	public GameObject bulletPrefab;
+	public GameObject shotVFXPrefab;
+
 	protected Rigidbody rigidBody;
 
 	protected GameObject player;
@@ -67,6 +69,7 @@ public class CommonShipController : MonoBehaviour
 	{
 		Vector3 gunPositionAbsolute = transform.TransformPoint(position);
 		GameObject bullet = Instantiate(bulletPrefab, gunPositionAbsolute, Quaternion.identity);
+		bullet.transform.parent = GameController.root.transform;
 		Quaternion bulletRotation = Quaternion.FromToRotation(bullet.transform.up, transform.forward);
 		bullet.transform.localRotation = bulletRotation;
 		bullet.GetComponent<Rigidbody>().velocity = transform.forward * BULLET_SPEED + rigidBody.velocity;
@@ -79,6 +82,7 @@ public class CommonShipController : MonoBehaviour
 			if (ENEMY_BULLET_TAG == other.gameObject.tag) {
 				health -= ENEMY_BULLET_DAMAGE;
 				SoundController.instance.ShipShoted();
+				ShotVFX(other);
 			}
 		} else {
 			// enemy was shooted
@@ -94,6 +98,17 @@ public class CommonShipController : MonoBehaviour
 	}
 
 
+	void ShotVFX(Collider other) {
+		GameObject vfx = Instantiate(shotVFXPrefab, other.ClosestPointOnBounds(transform.position), Quaternion.identity);
+		ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
+		ps.Play();
+		Destroy(vfx, ps.main.duration);
+
+		//shake camera
+
+	}
+
+
 	void ExplosionSFX()
 	{
 		var distance = Vector3.Distance(transform.position, player.transform.position);
@@ -106,7 +121,7 @@ public class CommonShipController : MonoBehaviour
 		ExplosionSFX();
 		gameObject.GetComponent<Collider>().enabled = false;
 		gameObject.GetComponent<Renderer>().enabled = false;
-		GameObject explosionParent = Instantiate(enemyExplosion, transform.position, Quaternion.identity);
+		GameObject explosionParent = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 		var particleSystem = explosionParent.GetComponent<ParticleSystem>();
 		particleSystem.Play();
 
@@ -115,6 +130,7 @@ public class CommonShipController : MonoBehaviour
 		StartCoroutine(FadeLight(light, duration));
 		Destroy(explosionParent, duration);
 		Destroy(gameObject, duration);
+		GameController.instance.RemoveEnemy(gameObject);
 
 		GameController.eventBus -= ProcessCommand;
 		GameController.ExplosionImpact(transform.position);

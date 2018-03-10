@@ -26,7 +26,7 @@ public class PlayerController : CommonShipController
 	public const float BULLET_SPAWN_DISTANCE = 0.5f;
 	private const float SHIP_SPEED = 1f;
 	private const float SHIP_STOPPED_SPEED = 1f;
-	private const float SHIP_ACCELERATION = 20f;
+	private const float SHIP_ACCELERATION = 80f;
 	private const int CHAIN_FIRE_NUMBERS = 3;
 
 	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);

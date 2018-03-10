@@ -37,7 +37,7 @@ public class EnemyAI : CommonShipController
 	protected override void Start()
 	{
 		base.Start();
-		state = State.Idle;
+		state = State.Commanded;
 		path = new Path();
 		isStraightVisibility = false;
 	}
@@ -55,9 +55,9 @@ public class EnemyAI : CommonShipController
 
 	private void Update()
 	{
-		if (State.Idle != state && !path.IsEmpty()) {
-			Debug.DrawRay(transform.position, path.GetCurrentPoint());
-		}
+		//if (State.Idle != state && !path.IsEmpty()) {
+		//	Debug.DrawRay(transform.position, path.GetCurrentPoint());
+		//}
 
 		ProcessStates();
 	}
@@ -209,4 +209,8 @@ public class EnemyAI : CommonShipController
 		return Path.Empty;
 	}
 
+
+	public void AttackCommand() {
+		state = State.Commanded;
+	}
 }
