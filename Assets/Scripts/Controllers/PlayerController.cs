@@ -65,6 +65,11 @@ public class PlayerController : CommonShipController
 	}
 
 
+	private void OnGUI() {
+		GUI.TextArea(new Rect(0, 0, 100, 30), "HP: " + health);
+	}
+
+
 	private void LateUpdate()
 	{
 		HandleMouseDirections();
@@ -204,10 +209,15 @@ public class PlayerController : CommonShipController
 
 	private void HandleMouseDirections()
 	{
-
 		var crossHairPosition = CrossHairController.position;
 		var direction = Camera.main.ScreenPointToRay(crossHairPosition).direction;
 		transform.rotation = Quaternion.LookRotation(direction, transform.up);
 	}
 
+	override protected void ExplodeShip()
+	{
+		CrossHairController.isEnabled = false;
+		StopEngines();
+		base.ExplodeShip();
+	}
 }

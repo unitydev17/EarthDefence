@@ -11,7 +11,7 @@ public class CommonShipController : MonoBehaviour
 	private const string ENEMY_BULLET_TAG = "EnemyBullet";
 	private const string PLAYER_BULLET_TAG = "PlayerBullet";
 	private const float BULLET_SPEED = 200f;
-	private const float ENEMY_BULLET_DAMAGE = 1f;
+	private const float ENEMY_BULLET_DAMAGE = 10f;
 	private const float PLAYER_BULLET_DAMAGE = 20f;
 	private const float EXPLOSION_MAX_DISTANCE = 100f;
 	private const float EXPLOSION_FORCE = 300f;
@@ -23,7 +23,7 @@ public class CommonShipController : MonoBehaviour
 	protected Rigidbody rigidBody;
 
 	protected GameObject player;
-	private float health;
+	protected float health;
 
 
 	protected virtual void Start()
@@ -33,6 +33,8 @@ public class CommonShipController : MonoBehaviour
 		rigidBody.useGravity = false;
 		if (this is EnemyAI) {
 			player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
+		} else {
+			player = transform.gameObject;
 		}
 		GameController.eventBus += ProcessCommand;
 	}
@@ -83,6 +85,9 @@ public class CommonShipController : MonoBehaviour
 				health -= ENEMY_BULLET_DAMAGE;
 				SoundController.instance.ShipShoted();
 				ShotVFX(other);
+				if (health <= 0) {
+					ExplodeShip();
+				}
 			}
 		} else {
 			// enemy was shooted
@@ -90,7 +95,7 @@ public class CommonShipController : MonoBehaviour
 				health -= PLAYER_BULLET_DAMAGE;
 			}
 			if (health <= 0) {
-				ExplodeEnemy();
+				ExplodeShip();
 			}
 		}
 
@@ -116,7 +121,7 @@ public class CommonShipController : MonoBehaviour
 	}
 
 
-	void ExplodeEnemy()
+	protected virtual void ExplodeShip()
 	{
 		ExplosionSFX();
 		gameObject.GetComponent<Collider>().enabled = false;

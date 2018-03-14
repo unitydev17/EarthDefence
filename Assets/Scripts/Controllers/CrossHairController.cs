@@ -13,10 +13,12 @@ public class CrossHairController : MonoBehaviour
 	private static float dx, dy;
 	public static Vector2 position;
 	private Vector2 centerPosition;
+	public static bool isEnabled;
 
 
 	void Start()
 	{
+		isEnabled = true;
 		Cursor.visible = false;
 		centerPosition = new Vector3(Screen.width / 2, Screen.height / 2);
 		position = centerPosition;
@@ -25,8 +27,10 @@ public class CrossHairController : MonoBehaviour
 
 	void Update()
 	{
-		HandleMouseDirections();
-		UpdateTransform();
+		if (isEnabled) {
+			HandleMouseDirections();
+			UpdateTransform();
+		}
 	}
 
 
