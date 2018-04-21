@@ -10,11 +10,16 @@ public class CommonShipController : MonoBehaviour
 	private const string PLAYER_TAG = "Player";
 	private const string ENEMY_BULLET_TAG = "EnemyBullet";
 	private const string PLAYER_BULLET_TAG = "PlayerBullet";
+
 	private const float BULLET_SPEED = 200f;
+	private const float BULLET_LIFETIME_SEC = 3f;
 	private const float ENEMY_BULLET_DAMAGE = 10f;
 	private const float PLAYER_BULLET_DAMAGE = 20f;
 	private const float EXPLOSION_MAX_DISTANCE = 100f;
 	private const float EXPLOSION_FORCE = 300f;
+
+	public const float MAX_VELOCITY = 2500f;
+	protected const float SHIP_ACCELERATION = 80f;
 
 	public GameObject explosionPrefab;
 	public GameObject bulletPrefab;
@@ -26,12 +31,17 @@ public class CommonShipController : MonoBehaviour
 	protected float health;
 
 
+	public GameObject GetPlayer() {
+		return player;
+	}
+
+
 	protected virtual void Start()
 	{
 		health = 100f;
 		rigidBody = GetComponent<Rigidbody>();
 		rigidBody.useGravity = false;
-		if (this is EnemyAI) {
+		if (this is EnemyAIOld) {
 			player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
 		} else {
 			player = transform.gameObject;
@@ -60,7 +70,7 @@ public class CommonShipController : MonoBehaviour
 	}
 
 
-	protected void Fire(Vector3 leftGunPosition, Vector3 rightGunPosition)
+	public void Fire(Vector3 leftGunPosition, Vector3 rightGunPosition)
 	{
 		FireLazer(leftGunPosition);
 		FireLazer(rightGunPosition);
@@ -75,6 +85,7 @@ public class CommonShipController : MonoBehaviour
 		Quaternion bulletRotation = Quaternion.FromToRotation(bullet.transform.up, transform.forward);
 		bullet.transform.localRotation = bulletRotation;
 		bullet.GetComponent<Rigidbody>().velocity = transform.forward * BULLET_SPEED + rigidBody.velocity;
+		Destroy(bullet, BULLET_LIFETIME_SEC);
 	}
 
 
@@ -82,7 +93,7 @@ public class CommonShipController : MonoBehaviour
 	{
 		if (gameObject.CompareTag(PLAYER_TAG)) {
 			if (ENEMY_BULLET_TAG == other.gameObject.tag) {
-				health -= ENEMY_BULLET_DAMAGE;
+				//health -= ENEMY_BULLET_DAMAGE;
 				SoundController.instance.ShipShoted();
 				ShotVFX(other);
 				if (health <= 0) {
@@ -135,7 +146,7 @@ public class CommonShipController : MonoBehaviour
 		StartCoroutine(FadeLight(light, duration));
 		Destroy(explosionParent, duration);
 		Destroy(gameObject, duration);
-		GameController.instance.RemoveEnemy(gameObject);
+		//GameController.instance.RemoveEnemy(gameObject);
 
 		GameController.eventBus -= ProcessCommand;
 		GameController.ExplosionImpact(transform.position);
@@ -150,4 +161,32 @@ public class CommonShipController : MonoBehaviour
 			yield return null;
 		}
 	}
+
+	protected void ApplyMoveRestrictions() {
+		RestrictMaxVelocity();
+	}
+
+	void RestrictMaxVelocity() {
+		if (rigidBody.velocity.magnitude > MAX_VELOCITY) {
+			rigidBody.velocity = rigidBody.velocity.normalized * MAX_VELOCITY;
+		}
+	}
+
+
+	#region DEBUG
+
+	protected void DebugPath(LinkedList<Vector3> points) {
+		if (points.Count == 0) {
+			return;
+		}
+
+		IEnumerator enumerator = points.GetEnumerator();
+		enumerator.MoveNext();
+		Vector3 first = (Vector3)enumerator.Current;
+		while (enumerator.MoveNext()) {
+			Vector3 second = (Vector3)enumerator.Current;
+			Debug.DrawLine(first, second);
+		}
+	}
+	#endregion
 }

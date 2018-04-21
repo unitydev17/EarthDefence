@@ -131,7 +131,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1808868993618170}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 131, y: -58, z: 1949}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4828929069101658}
@@ -282,10 +282,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1c046e67d42194f8ed3d51e45b4f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyExplosion: {fileID: 1874506025603560, guid: 781f1c1e896dacc44aa5e9e1ecce50a2,
-    type: 2}
+  explosionPrefab: {fileID: 0}
   bulletPrefab: {fileID: 1170473738981018, guid: fbc52366b204dde4fa6243a78f757ae1,
     type: 2}
+  shotVFXPrefab: {fileID: 0}
   centralEngine: {fileID: 1099910505351674}
   leftEngine: {fileID: 1694636611679826}
   rightEngine: {fileID: 1568711272911924}
@@ -1211,7 +1211,7 @@ ParticleSystem:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
         key1: {r: 0.5019608, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0.21176471, b: 1, a: 0}
+        key2: {r: 0, g: 0.21176472, b: 1, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -4301,7 +4301,7 @@ ParticleSystem:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
         key1: {r: 0.5019608, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0.21176471, b: 1, a: 0}
+        key2: {r: 0, g: 0.21176472, b: 1, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -7391,7 +7391,7 @@ ParticleSystem:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
         key1: {r: 0.5019608, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0.21176471, b: 1, a: 0}
+        key2: {r: 0, g: 0.21176472, b: 1, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}

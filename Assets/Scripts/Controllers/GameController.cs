@@ -12,18 +12,12 @@ public class GameController : MonoBehaviour {
 	public const string PLANET_TAG = "Planet";
 	public const string ATTACK_COMMAND = "Attack";
 	public const string EXPLOSION_IMPACT_COMMAND = "ExplosionImpact";
-	private const int MAX_ENEMIES_COUNT = 30;
-	private const int ENEMIES_COUNT = 1;
-	private const float SPAWN_RADIUS = 20f;
-	private const float SPAWN_TIME = 5f;
+
 
 	public static GameController instance;
 	public static event Action<string, object> eventBus;
 
-	public GameObject enemyPrefab;
-	private Vector3 SPAWN_POINT = new Vector3 (0, 50, 0);
 
-	private List<GameObject> enemies;
 
 	public static GameObject root;
 	private GameObject earth;
@@ -35,16 +29,15 @@ public class GameController : MonoBehaviour {
 		if (instance == null) {
 			instance = this;
 		}
-		enemies = new List<GameObject>();
+		root = new GameObject("Root");
 	}
 
 
 	void Start() {
-		root = new GameObject("Root");
+		//root = new GameObject("Root");
 		SetupPlanets();
-		PlaceMoon();
-		PlacePlayer();
-		InvokeRepeating ("SpawnEnemies", SPAWN_TIME, SPAWN_TIME);
+		//PlaceMoon();
+		//PlacePlayer();
 	}
 
 
@@ -62,7 +55,7 @@ public class GameController : MonoBehaviour {
 	void SetupPlanets() {
 		GameObject[] planets = GameObject.FindGameObjectsWithTag(PLANET_TAG);
 		foreach (GameObject planet in planets) {
-			planet.transform.position = RandomizePosition(planet.transform, planet.transform.position.z);
+			//planet.transform.position = RandomizePosition(planet.transform, planet.transform.position.z);
 			if (EARTH_NAME == planet.name) {
 				earth = planet;
 			} else if (MOON_NAME == planet.name) {
@@ -98,27 +91,6 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	void SpawnEnemies() {
-		if (enemies.Count > MAX_ENEMIES_COUNT) {
-			return;
-		}
-
-		float deltaAngle = 360f / ENEMIES_COUNT;
-		float angle = 0;
-		for (int i = 0; i < ENEMIES_COUNT; i++) {
-			Vector3 rotatedVector = Quaternion.AngleAxis (angle, Vector3.up) * new Vector3(0, i, SPAWN_RADIUS);
-			Vector3 position = mars.transform.position + SPAWN_POINT + rotatedVector;
-			GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.LookRotation(Vector3.zero - SPAWN_POINT));
-			enemy.transform.parent = root.transform;
-
-			//enemy.GetComponent<EnemyAI>().AttackCommand();
-
-			enemies.Add(enemy);
-			angle += deltaAngle;
-		}
-	}
-
-
 	private void Update() {
 		HandleInput ();
 	}
@@ -135,9 +107,4 @@ public class GameController : MonoBehaviour {
 		eventBus(EXPLOSION_IMPACT_COMMAND, center);
 	}
 
-	public void RemoveEnemy(GameObject gameObject) {
-		if (enemies.Count > 0) {
-			enemies.Remove(gameObject);
-		}
-	}
 }

@@ -40,13 +40,11 @@ public class PostProcessingCtrl : MonoBehaviour
 	{
 		if (speedUp) {
 			weight += Time.deltaTime * SPEED_UP;
-			weight = Mathf.Clamp(weight, 0, 1);
-			volume.weight = weight;
 		} else {
 			weight -= Time.deltaTime * SLOW_DOWN;
-			weight = Mathf.Clamp(weight, 0, 1);
-			volume.weight = weight;
 		}
+		weight = Mathf.Clamp(weight, 0, 1);
+		volume.weight = weight;
 	}
 
 

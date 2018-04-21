@@ -15,12 +15,13 @@ public class PlayerFollower : MonoBehaviour
 	private Vector3 cameraOffset = new Vector3(0f, 1.5f, -4.5f);
 
 	void Update() {
+		if (player) {
+			desiredPosition = player.transform.TransformPoint(cameraOffset);
+			desiredRotation = player.transform.rotation;
 
-		desiredPosition = player.transform.TransformPoint(cameraOffset);
-		desiredRotation = player.transform.rotation;
-
-		transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, Time.deltaTime * ROTATE_SPEED);
-		transform.position = desiredPosition;
+			transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, Time.deltaTime * ROTATE_SPEED);
+			transform.position = desiredPosition;
+		}
 
 	}
 

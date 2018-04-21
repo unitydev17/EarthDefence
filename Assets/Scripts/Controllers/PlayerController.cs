@@ -22,11 +22,8 @@ public class PlayerController : CommonShipController
 		Fire
 	}
 
-
 	public const float BULLET_SPAWN_DISTANCE = 0.5f;
-	private const float SHIP_SPEED = 1f;
 	private const float SHIP_STOPPED_SPEED = 1f;
-	private const float SHIP_ACCELERATION = 80f;
 	private const int CHAIN_FIRE_NUMBERS = 3;
 
 	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
@@ -46,6 +43,7 @@ public class PlayerController : CommonShipController
 	private ParticleSystem rightPS;
 
 	private float enginesForce;
+	private bool isAlive;
 
 
 	void Start()
@@ -55,18 +53,22 @@ public class PlayerController : CommonShipController
 		leftPS = leftEngine.GetComponent<ParticleSystem>();
 		rightPS = rightEngine.GetComponent<ParticleSystem>();
 		enginesForce = 1;
+		isAlive = true;
 	}
 
 
 	private void Update()
 	{
-		HandleInput();
-		ProcessActions();
+		if (isAlive) {
+			HandleInput();
+			ProcessActions();
+		}
 	}
 
 
 	private void OnGUI() {
 		GUI.TextArea(new Rect(0, 0, 100, 30), "HP: " + health);
+		GUI.TextArea(new Rect(0, 30, 100, 50), "Velocity: " + rigidBody.velocity.magnitude);
 	}
 
 
@@ -137,12 +139,14 @@ public class PlayerController : CommonShipController
 		if (Input.GetKey(KeyCode.W)) {
 			MoveForward();
 		}
+
+		ApplyMoveRestrictions();
 	}
 
 
 	void MoveForward()
 	{
-		Vector3 forceForward = Vector3.Lerp(Vector3.zero, transform.forward * SHIP_SPEED, Time.deltaTime * SHIP_ACCELERATION);
+		Vector3 forceForward = Vector3.Lerp(Vector3.zero, transform.forward, Time.deltaTime * SHIP_ACCELERATION);
 		rigidBody.AddForce(forceForward, ForceMode.Impulse);
 		EnginesForceUp();
 	}
@@ -199,7 +203,7 @@ public class PlayerController : CommonShipController
 	void Brake()
 	{
 		if (Mathf.Abs(rigidBody.velocity.magnitude) > SHIP_STOPPED_SPEED) {
-			Vector3 forceForward = Vector3.Lerp(Vector3.zero, rigidBody.velocity.normalized * SHIP_SPEED, Time.deltaTime * SHIP_ACCELERATION);
+			Vector3 forceForward = Vector3.Lerp(Vector3.zero, rigidBody.velocity.normalized, Time.deltaTime * SHIP_ACCELERATION);
 			rigidBody.AddForce(-forceForward, ForceMode.Impulse);
 			return;
 		}
@@ -217,6 +221,7 @@ public class PlayerController : CommonShipController
 	override protected void ExplodeShip()
 	{
 		CrossHairController.isEnabled = false;
+		isAlive = false;
 		StopEngines();
 		base.ExplodeShip();
 	}
