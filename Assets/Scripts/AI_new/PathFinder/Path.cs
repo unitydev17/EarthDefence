@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Path
 {
+	public static LinkedList<Vector3> EMPTY = new LinkedList<Vector3>();
 
 	private LinkedList<Vector3> wayPoints;
 	private IEnumerator enumerator;
@@ -35,6 +36,9 @@ public class Path
 	public void Next()
 	{
 		isFinished = !enumerator.MoveNext();
+		if (isFinished) {
+			wayPoints.Clear();
+		}
 	}
 
 
@@ -82,6 +86,7 @@ public class Path
 
 	public void Start()
 	{
+		isFinished = false;
 		enumerator = wayPoints.GetEnumerator();
 		enumerator.MoveNext();
 	}

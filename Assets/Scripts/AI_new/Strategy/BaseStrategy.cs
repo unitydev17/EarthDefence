@@ -10,6 +10,7 @@ public class BaseStrategy
 	{
 		CreatePath,
 		RepeatCreatePath,
+		WaitPathFind,
 		MoveBase,
 		FollowAndAttack,
 		Idle
@@ -34,16 +35,17 @@ public class BaseStrategy
 	}
 
 
+	// Move and rotate
 	public virtual void Perform()
 	{
 		if (State.MoveBase == state) {
 			MoveRotate(path.GetCurrent());
 
 		} else if (State.FollowAndAttack == state) {
-			if (!CheckStopMovement()) {
-				MoveRotate(targetObj.position);
-			} else {
+			if (CheckStopMovement()) {
 				RotateOnly(targetObj.position);
+			} else {
+				MoveRotate(targetObj.position);	
 			}
 		}
 
@@ -79,7 +81,13 @@ public class BaseStrategy
 
 	void CheckNextPointAchieved()
 	{
-		float currDist = Vector3.Distance(obj.position, path.GetCurrent());
+		float currDist = 0;
+		try {
+			currDist = Vector3.Distance(obj.position, path.GetCurrent());
+		} catch (Exception e) {
+			Debug.Log("exc");
+		}
+
 		if (currDist <= ItemAI.BOUND_RADIUS) {
 			path.Next();
 			CheckPathFinished();

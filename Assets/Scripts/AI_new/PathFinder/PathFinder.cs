@@ -5,7 +5,15 @@ using UnityEngine;
 
 public sealed class PathFinder
 {
+
 	#region CONSTANTS
+
+	private enum CollidersToExclude {
+		None = 0,
+		One = 1,
+		Two = 2
+	}
+
 
 	private const float WAYPOINT_SECTION_RADIUS = 0.5f;
 	private const int TRACE_SEGMENTS = 16;
@@ -45,29 +53,23 @@ public sealed class PathFinder
 	#endregion
 	*/
 
+	public PathFinder(MonoBehaviour mono) {
+		this.mono = mono;
+	}
+
+
 	#region FIELDS
 
 
 
 	private LinkedList<Vector3> wayPoints = new LinkedList<Vector3>();
-	private int collidersToExclude;
 	private SortedList<float, Vector3> values = new SortedList<float, Vector3>();
+	private MonoBehaviour mono;
 
 	#endregion
 
 
-	public bool IsLookAtTarget(Transform from, Transform to) {
-		Vector3 direction = to.position - from.position;
-		RaycastHit hit;
-		if (Physics.Raycast(from.position, direction, out hit, ItemAI.ATTACK_RADIUS)) {
-			if (hit.transform.Equals(to)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-
+	/*
 	public bool FindPathFollow(Transform from, Transform to, ref Path path, float radius)
 	{
 		float distance = Vector3.Distance(from.position, to.position);
@@ -98,25 +100,27 @@ public sealed class PathFinder
 			return true;
 		}
 		return false;
-	}
+	}*/
 
-
+	/*
 	public bool FindPathAround(Transform from, Transform to, ref Path path, float radius)
 	{
 		Vector3 center = to.position;
 		Vector3 point = center + new Vector3(Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f).normalized * radius;
 		return FindPath(from, point, ref path);
-	}
+	}*/
 
 
-	public bool FindPathAround(Transform from, Vector3 to, ref Path path, float radius)
+	public void FindPathAround(Transform from, Vector3 to, float radius, System.Action<LinkedList<Vector3>> callback)
 	{
 		Vector3 center = to;
-		Vector3 point = center + new Vector3(Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f).normalized * radius;
-		return FindPath(from, point, ref path);
+		Vector3 pointAround = center + new Vector3(Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f).normalized * radius;
+		FindPath(from, pointAround, (wayPoints) => {
+			callback(wayPoints);
+		});
 	}
 
-
+	/*
 	public bool FindPath(Transform from, Transform to, ref Path path)
 	{
 		from.gameObject.layer = LAYER_IGNORE_RAYCAST;
@@ -124,41 +128,43 @@ public sealed class PathFinder
 		bool result = Find(from.position, to.position, ref path);
 		from.gameObject.layer = LAYER_DEFAULT;
 		return result;
-	}
+	}*/
 
 
-	public bool FindPath(Transform from, Vector3 to, ref Path path)
+	public void FindPath(Transform from, Vector3 to, System.Action<LinkedList<Vector3>> callback)
 	{
-		from.gameObject.layer = LAYER_IGNORE_RAYCAST;
-		collidersToExclude = 0;
-		bool result = Find(from.position, to, ref path);
-		from.gameObject.layer = LAYER_DEFAULT;
-		return result;
+		Find(CollidersToExclude.One, from.position, to, (wayPoints) => {
+			callback(wayPoints);
+		});
 	}
 
-
+	/*
 	public bool FindPath(Vector3 from, Vector3 to, ref Path path)
 	{
 		collidersToExclude = 0;
 		return Find(from, to, ref path);
-	}
+	}*/
 
 
-	private bool Find(Vector3 start, Vector3 finish, ref Path path)
+	private void Find(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
 	{	
 		//float startTime = Time.realtimeSinceStartup;
 
-		bool pathFound = FindForward(start, finish, ref path);
-		if (!pathFound) {
-			pathFound = FindBackward(start, finish, ref path);
-		}
-
+		mono.StartCoroutine(FindForward(collidersToExclude, start, finish, (wayPoints) => {
+			bool pathFound = wayPoints.Count > 0;
+			if (pathFound) {
+				callback(wayPoints);
+			} else {
+				//pathFound = FindBackward(start, finish, ref path);
+				callback(wayPoints);
+			}
+		}));
+			
 		//float duration = Time.realtimeSinceStartup - startTime;
 		//Debug.Log(duration);
-		return pathFound;
 	}
 
-
+	/*
 	private bool FindBackward(Vector3 start, Vector3 finish, ref Path path)
 	{
 		var quaternion = Quaternion.LookRotation(start - finish);
@@ -200,10 +206,10 @@ public sealed class PathFinder
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 
-	private bool FindForward(Vector3 start, Vector3 finish, ref Path path)
+	private IEnumerator FindForward(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
 	{
 		float period = 2f * Mathf.PI;
 		float delta = period / TRACE_SEGMENTS;
@@ -214,31 +220,32 @@ public sealed class PathFinder
 
 			// rotate around the axis
 			for (float phi = 0f; phi < period; phi += delta) {
-				if (CheckPathClear(start, finish, amplitude, phi)) {
+				if (CheckPathClear(collidersToExclude, start, finish, amplitude, phi)) {
 					paths.Add(new LinkedList<Vector3>(wayPoints));
 				}
+				yield return null;
 			}
 
 			// randomize path selection
 			if (paths.Count > 0) {
 				int selectedPath = Random.Range(0, paths.Count);
-				path.SetWayPoints(paths[selectedPath]);
-				return true;
+				callback(paths[selectedPath]);
+				yield break;
 			}
 		}
-		return false;
+		callback(Path.EMPTY);
 	}
 
 
-	private bool CheckPathClear(Vector3 start, Vector3 finish, float amplitude, float phi)
+	private bool CheckPathClear(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, float amplitude, float phi)
 	{
 		wayPoints.Clear();
 		GetPoints(start, finish, amplitude, phi);
-		return !HasInterceptions();
+		return !HasInterceptions(collidersToExclude);
 	}
 
 
-	private bool HasInterceptions()
+	private bool HasInterceptions(CollidersToExclude collidersToExclude)
 	{
 		if (wayPoints.Count > 0) {
 			IEnumerator enumerator = wayPoints.GetEnumerator();
@@ -266,11 +273,11 @@ public sealed class PathFinder
 			}
 
 			// There are several scenarios.
-			// 1) User passed "transform from" and "transform to" objects to find path between them. In this case one (target transform) collider
+			// 1) User passed "transform from" and "transform to" objects to find path between them. In this case two (target transform) colliders
 			// should be excluded from the cast. 
-			// 2) User passed "transform from" and "vector3 to" objects. There are no excluded colliders in this case.
+			// 2) User passed "transform from" and "vector3 to" objects. There is one excluded colliders in this case.
 			// 3) User passed "vector3 from" and "vector3 to" objects. There are no excluded colliders in this case. 
-			return idList.Count > collidersToExclude;
+			return idList.Count > (int) collidersToExclude;
 		}
 		return true;
 	}
@@ -303,6 +310,17 @@ public sealed class PathFinder
 		RaycastHit hit;
 		if (Physics.Raycast (start, direction, out hit, distance) && hit.collider.gameObject == target.gameObject) {
 			return true;
+		}
+		return false;
+	}
+
+	public bool IsLookAtTarget(Transform from, Transform to) {
+		Vector3 direction = to.position - from.position;
+		RaycastHit hit;
+		if (Physics.Raycast(from.position, direction, out hit, ItemAI.ATTACK_RADIUS)) {
+			if (hit.transform.Equals(to)) {
+				return true;
+			}
 		}
 		return false;
 	}

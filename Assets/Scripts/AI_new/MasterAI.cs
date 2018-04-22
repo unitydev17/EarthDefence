@@ -46,7 +46,7 @@ public class MasterAI : MonoBehaviour
 		item.transform.parent = GameController.root.transform;
 		items.Add(item);
 
-		item.GetComponent<ItemAI>().SetStrategy(new DefenceStrategy(item.transform, defencePointObj.transform.position, SPAWN_RADIUS));
+		item.GetComponent<ItemAI>().SetStrategy(new DefenceStrategy(this, item.transform, defencePointObj.transform.position, SPAWN_RADIUS));
 
 	}
 
