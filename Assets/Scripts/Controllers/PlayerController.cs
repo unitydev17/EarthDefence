@@ -67,7 +67,6 @@ public class PlayerController : CommonShipController
 
 
 	private void OnGUI() {
-		GUI.TextArea(new Rect(0, 0, 100, 30), "HP: " + health);
 		GUI.TextArea(new Rect(0, 30, 100, 50), "Velocity: " + rigidBody.velocity.magnitude);
 	}
 
