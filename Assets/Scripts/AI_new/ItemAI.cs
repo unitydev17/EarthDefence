@@ -17,8 +17,10 @@ public class ItemAI : CommonShipController
 
 	public const float FIRE_FREQUENCY = 1f;
 
-	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
-	private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
+	//private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
+	//private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
+	private Vector3 rightGunPosition = new Vector3(-0.87f, 0f, 11.6f);
+	private Vector3 leftGunPosition = new Vector3(0.87f, 0f, 11.6f);
 
 
 	private BaseStrategy strategy;

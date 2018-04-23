@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class BaseStrategy
+public abstract class BaseStrategy
 {
 	protected const float REPEAT_PATH_WAIT = 2f;
 
@@ -13,6 +13,8 @@ public class BaseStrategy
 		WaitPathFind,
 		MoveBase,
 		FollowAndAttack,
+		WaitFollowPathFind,
+		FollowPath,
 		Idle
 	}
 
@@ -35,24 +37,11 @@ public class BaseStrategy
 	}
 
 
-	// Move and rotate
-	public virtual void Perform()
-	{
-		if (State.MoveBase == state) {
-			MoveRotate(path.GetCurrent());
 
-		} else if (State.FollowAndAttack == state) {
-			if (CheckStopMovement()) {
-				RotateOnly(targetObj.position);
-			} else {
-				MoveRotate(targetObj.position);	
-			}
-		}
-
-	}
+	public abstract void Perform();
 
 
-	void RotateOnly(Vector3 toPoint)
+	protected void RotateOnly(Vector3 toPoint)
 	{
 		Vector3 direction = toPoint - obj.position;
 		Vector3 newDir = Vector3.RotateTowards(obj.forward, direction, Time.deltaTime * ItemAI.ROTATION_SPEED, 0f);
@@ -60,13 +49,13 @@ public class BaseStrategy
 	}
 
 
-	void MoveRotate(Vector3 toPoint)
+	protected void MoveRotate(Vector3 toPoint)
 	{
 		Vector3 direction = toPoint - obj.position;
 
 		// rotate
-		Vector3 newDir = Vector3.RotateTowards(obj.forward, direction, Time.deltaTime * ItemAI.ROTATION_SPEED, 0f);
-		obj.rotation = Quaternion.LookRotation(newDir);
+		Vector3 newDir = Vector3.RotateTowards(obj.forward, direction, 1f, 0f);
+		obj.rotation = Quaternion.Lerp(obj.rotation, Quaternion.LookRotation(newDir), Time.deltaTime * ItemAI.ROTATION_SPEED);
 
 		if (!path.IsEmpty()) {
 			// move
@@ -81,12 +70,7 @@ public class BaseStrategy
 
 	void CheckNextPointAchieved()
 	{
-		float currDist = 0;
-		try {
-			currDist = Vector3.Distance(obj.position, path.GetCurrent());
-		} catch (Exception e) {
-			Debug.Log("exc");
-		}
+		float currDist = Vector3.Distance(obj.position, path.GetCurrent());
 
 		if (currDist <= ItemAI.BOUND_RADIUS) {
 			path.Next();
@@ -97,12 +81,16 @@ public class BaseStrategy
 
 	void CheckPathFinished()
 	{
-		if (path.IsFinished() && State.FollowAndAttack != state) {
-			state = State.Idle;
+		if (path.IsFinished()) {
+			if (State.FollowPath == state) {
+				state = State.FollowAndAttack;
+			} else {
+				state = State.Idle;
+			}
 		}
 	}
 
-	private bool CheckStopMovement()
+	protected bool CheckAttackDistanceReached()
 	{
 		float distance = Vector3.Distance(obj.position, targetObj.position);
 		return distance <= ItemAI.ATTACK_RADIUS;

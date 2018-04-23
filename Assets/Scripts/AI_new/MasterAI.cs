@@ -13,13 +13,10 @@ public class MasterAI : MonoBehaviour
 	[SerializeField]
 	private float SPAWN_TIME = 5f;
 
-
-	private const float SPAWN_RADIUS = 50f;
-
 	public GameObject enemyPrefab;
 
 	public GameObject spawnPointObj;
-	public GameObject defencePointObj;
+	public GameObject defenceObj;
 
 
 	private List<GameObject> items;
@@ -46,7 +43,7 @@ public class MasterAI : MonoBehaviour
 		item.transform.parent = GameController.root.transform;
 		items.Add(item);
 
-		item.GetComponent<ItemAI>().SetStrategy(new DefenceStrategy(this, item.transform, defencePointObj.transform.position, SPAWN_RADIUS));
+		item.GetComponent<ItemAI>().SetStrategy(new DefenceStrategy(this, item.transform, defenceObj.transform));
 
 	}
 

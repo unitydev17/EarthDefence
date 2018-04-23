@@ -25,33 +25,6 @@ public sealed class PathFinder
 
 	#endregion
 
-	/*
-	#region SINGLETON
-
-	private static volatile PathFinder instance;
-	private static object syncRoot = new Object();
-
-
-	private PathFinder()
-	{
-	}
-
-
-	public static PathFinder Instance {
-		get {
-			if (instance == null) {
-				lock (syncRoot) {
-					if (instance == null) {
-						instance = new PathFinder();
-					}
-				}
-			}
-			return instance;
-		}
-	}
-
-	#endregion
-	*/
 
 	public PathFinder(MonoBehaviour mono) {
 		this.mono = mono;
@@ -69,47 +42,13 @@ public sealed class PathFinder
 	#endregion
 
 
-	/*
-	public bool FindPathFollow(Transform from, Transform to, ref Path path, float radius)
+
+	public void FindPathFollow(Transform from, Transform to, System.Action<LinkedList<Vector3>> callback)
 	{
-		float distance = Vector3.Distance(from.position, to.position);
-		if (distance <= radius) {
-			return true;
-		}
-
-		if (FindPath(from, to, ref path)) {
-			LinkedList<Vector3> wayPoints = path.GetWayPoints();
-			bool distanceReached = false;
-			do {
-				LinkedListNode<Vector3> node = wayPoints.Last;
-			
-				distance = 0;
-				distance = Vector3.Distance(to.transform.position, node.Value); 
-
-				if (distance < radius) {
-					wayPoints.RemoveLast();
-					if (wayPoints.Count == 0) {
-						distanceReached = true;
-					}
-				} else {
-					distanceReached = true;
-				}
-			} while (!distanceReached);
-
-			path.Start();
-			return true;
-		}
-		return false;
-	}*/
-
-	/*
-	public bool FindPathAround(Transform from, Transform to, ref Path path, float radius)
-	{
-		Vector3 center = to.position;
-		Vector3 point = center + new Vector3(Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f).normalized * radius;
-		return FindPath(from, point, ref path);
-	}*/
-
+		FindPath(from, to.position, (wayPoints) => {
+			callback(wayPoints);
+		});
+	}
 
 	public void FindPathAround(Transform from, Vector3 to, float radius, System.Action<LinkedList<Vector3>> callback)
 	{
@@ -120,16 +59,6 @@ public sealed class PathFinder
 		});
 	}
 
-	/*
-	public bool FindPath(Transform from, Transform to, ref Path path)
-	{
-		from.gameObject.layer = LAYER_IGNORE_RAYCAST;
-		collidersToExclude = 1;
-		bool result = Find(from.position, to.position, ref path);
-		from.gameObject.layer = LAYER_DEFAULT;
-		return result;
-	}*/
-
 
 	public void FindPath(Transform from, Vector3 to, System.Action<LinkedList<Vector3>> callback)
 	{
@@ -137,13 +66,6 @@ public sealed class PathFinder
 			callback(wayPoints);
 		});
 	}
-
-	/*
-	public bool FindPath(Vector3 from, Vector3 to, ref Path path)
-	{
-		collidersToExclude = 0;
-		return Find(from, to, ref path);
-	}*/
 
 
 	private void Find(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
@@ -315,7 +237,7 @@ public sealed class PathFinder
 	}
 
 	public bool IsLookAtTarget(Transform from, Transform to) {
-		Vector3 direction = to.position - from.position;
+		Vector3 direction = from.forward;
 		RaycastHit hit;
 		if (Physics.Raycast(from.position, direction, out hit, ItemAI.ATTACK_RADIUS)) {
 			if (hit.transform.Equals(to)) {
