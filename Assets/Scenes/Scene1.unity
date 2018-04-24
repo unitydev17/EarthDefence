@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.796
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1986518744}
-  m_IndirectSpecularColor: {r: 0.030743761, g: 0.09113038, b: 0.18244699, a: 0.796}
+  m_IndirectSpecularColor: {r: 0.030743761, g: 0.09113039, b: 0.18244699, a: 0.796}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -3266,9 +3266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2549350b7c933744da2411f5ac36af4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_ENEMIES_COUNT: 1
+  MAX_ENEMIES_COUNT: 100
   SPAWN_TIME: 1
-  enemyPrefab: {fileID: 1130164124584292, guid: f8680047e24b5df4fb5b5955b33cd3dd,
+  enemyPrefab: {fileID: 1000013772491214, guid: fbc6e615db3674e43b99697e76a728e7,
     type: 2}
   spawnPointObj: {fileID: 136255412}
   defenceObj: {fileID: 2017974601}

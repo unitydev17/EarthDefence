@@ -57,6 +57,16 @@ public class DefenceStrategy : BaseStrategy
 			FollowPath_Logic();
 		}
 
+		CheckAttackFinished_Logic();
+
+	}
+
+
+	void CheckAttackFinished_Logic()
+	{
+		if (CheckStopAttack()) {
+			state = State.CreatePath;
+		}
 	}
 
 
@@ -126,11 +136,6 @@ public class DefenceStrategy : BaseStrategy
 		// shoot if possible
 		if (CheckFirePossible()) {
 			Fire();
-		}
-
-		// stop the attack if enemy is far away
-		if (CheckStopAttack()) {
-			state = State.CreatePath;
 		}
 	}
 

@@ -8,7 +8,8 @@ public sealed class PathFinder
 
 	#region CONSTANTS
 
-	private enum CollidersToExclude {
+	private enum CollidersToExclude
+	{
 		None = 0,
 		One = 1,
 		Two = 2
@@ -26,7 +27,8 @@ public sealed class PathFinder
 	#endregion
 
 
-	public PathFinder(MonoBehaviour mono) {
+	public PathFinder(MonoBehaviour mono)
+	{
 		this.mono = mono;
 	}
 
@@ -38,6 +40,7 @@ public sealed class PathFinder
 	private LinkedList<Vector3> wayPoints = new LinkedList<Vector3>();
 	private SortedList<float, Vector3> values = new SortedList<float, Vector3>();
 	private MonoBehaviour mono;
+	private Coroutine coroutine;
 
 	#endregion
 
@@ -49,6 +52,7 @@ public sealed class PathFinder
 			callback(wayPoints);
 		});
 	}
+
 
 	public void FindPathAround(Transform from, Vector3 to, float radius, System.Action<LinkedList<Vector3>> callback)
 	{
@@ -72,7 +76,11 @@ public sealed class PathFinder
 	{	
 		//float startTime = Time.realtimeSinceStartup;
 
-		mono.StartCoroutine(FindForward(collidersToExclude, start, finish, (wayPoints) => {
+		if (coroutine != null) {
+			mono.StopCoroutine(coroutine);
+		}
+
+		coroutine = mono.StartCoroutine(FindForward(collidersToExclude, start, finish, wayPoints => {
 			bool pathFound = wayPoints.Count > 0;
 			if (pathFound) {
 				callback(wayPoints);
@@ -199,7 +207,7 @@ public sealed class PathFinder
 			// should be excluded from the cast. 
 			// 2) User passed "transform from" and "vector3 to" objects. There is one excluded colliders in this case.
 			// 3) User passed "vector3 from" and "vector3 to" objects. There are no excluded colliders in this case. 
-			return idList.Count > (int) collidersToExclude;
+			return idList.Count > (int)collidersToExclude;
 		}
 		return true;
 	}
@@ -212,7 +220,7 @@ public sealed class PathFinder
 		float dist = Vector3.Distance(start, finish);
 		float rad = dist / 2f;
 		float theta = 0;
-		int steps = Mathf.RoundToInt(rad/2);
+		int steps = Mathf.RoundToInt(rad / 2);
 		float deltaT = Mathf.PI / steps;
 
 		while (steps-- >= 0) {
@@ -226,17 +234,21 @@ public sealed class PathFinder
 		}
 	}
 
-	public bool IsTargetVisible(Vector3 start, Transform target) {
+
+	public bool IsTargetVisible(Vector3 start, Transform target)
+	{
 		Vector3 direction = target.position - start;
-		float distance = Vector3.Distance (start, target.position);
+		float distance = Vector3.Distance(start, target.position);
 		RaycastHit hit;
-		if (Physics.Raycast (start, direction, out hit, distance) && hit.collider.gameObject == target.gameObject) {
+		if (Physics.Raycast(start, direction, out hit, distance) && hit.collider.gameObject == target.gameObject) {
 			return true;
 		}
 		return false;
 	}
 
-	public bool IsLookAtTarget(Transform from, Transform to) {
+
+	public bool IsLookAtTarget(Transform from, Transform to)
+	{
 		Vector3 direction = from.forward;
 		RaycastHit hit;
 		if (Physics.Raycast(from.position, direction, out hit, ItemAI.ATTACK_RADIUS)) {
