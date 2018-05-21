@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 
 public class PlayerController : CommonShipController
@@ -37,6 +38,8 @@ public class PlayerController : CommonShipController
 	public GameObject centralEngine;
 	public GameObject leftEngine;
 	public GameObject rightEngine;
+
+    public Image healthBar;
 
 	private ParticleSystem centralPS;
 	private ParticleSystem leftPS;
@@ -224,4 +227,23 @@ public class PlayerController : CommonShipController
 		StopEngines();
 		base.ExplodeShip();
 	}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "EnemyBullet")
+        {
+            StartCoroutine(Deleteline(healthBar));
+        }
+    }
+
+    public IEnumerator Deleteline(Image line)
+    {
+        int i = 0;
+        while (i <= 10)
+        {
+            line.fillAmount -= 0.02f;
+            i++;
+            yield return new WaitForSeconds(0.03f);
+        }
+        yield return null;
+    }
 }
