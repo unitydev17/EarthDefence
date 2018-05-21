@@ -44,8 +44,9 @@ public class PlayerController : CommonShipController
 	private ParticleSystem centralPS;
 	private ParticleSystem leftPS;
 	private ParticleSystem rightPS;
+    private ParticleSystem playerExplosion;
 
-	private float enginesForce;
+    private float enginesForce;
 	private bool isAlive;
 
 
@@ -65,6 +66,11 @@ public class PlayerController : CommonShipController
 		if (isAlive) {
 			HandleInput();
 			ProcessActions();
+            if (healthBar.fillAmount == 0)
+            {
+                Instantiate(explosionPrefab, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }
 		}
 	}
 
