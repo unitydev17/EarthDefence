@@ -146,10 +146,15 @@ public class CommonShipController : MonoBehaviour
 		StartCoroutine(FadeLight(light, duration));
 		Destroy(explosionParent, duration);
 		Destroy(gameObject, duration);
-		//GameController.instance.RemoveEnemy(gameObject);
+
+		RemoveItemFromParent ();
 
 		GameController.eventBus -= ProcessCommand;
 		GameController.ExplosionImpact(transform.position);
+	}
+
+	// Stub. Could be implemented in ancestor classes.
+	protected virtual void RemoveItemFromParent() {
 	}
 
 

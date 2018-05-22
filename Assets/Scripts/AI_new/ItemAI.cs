@@ -24,6 +24,12 @@ public class ItemAI : CommonShipController
 
 
 	private BaseStrategy strategy;
+	private MasterAI masterAI;
+
+
+	public void SetMasterAI(MasterAI masterAI) {
+		this.masterAI = masterAI;
+	}
 
 
 	public void SetStrategy(BaseStrategy strategy)
@@ -42,5 +48,10 @@ public class ItemAI : CommonShipController
 
 	public void Fire() {
 		base.Fire(leftGunPosition, rightGunPosition);
+	}
+
+	protected override void RemoveItemFromParent ()
+	{
+		masterAI.RemoveEnemy (gameObject);
 	}
 }

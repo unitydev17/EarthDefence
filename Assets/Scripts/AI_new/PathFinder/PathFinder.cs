@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+using System;
 
 
 public sealed class PathFinder
@@ -41,6 +43,7 @@ public sealed class PathFinder
 	private SortedList<float, Vector3> values = new SortedList<float, Vector3>();
 	private MonoBehaviour mono;
 	private Coroutine coroutine;
+	private Coroutine innerCoroutine;
 
 	#endregion
 
@@ -74,7 +77,6 @@ public sealed class PathFinder
 
 	private void Find(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
 	{	
-		//float startTime = Time.realtimeSinceStartup;
 
 		if (coroutine != null) {
 			mono.StopCoroutine(coroutine);
@@ -89,9 +91,6 @@ public sealed class PathFinder
 				callback(wayPoints);
 			}
 		}));
-			
-		//float duration = Time.realtimeSinceStartup - startTime;
-		//Debug.Log(duration);
 	}
 
 	/*
@@ -147,13 +146,49 @@ public sealed class PathFinder
 
 		// enlarge amplitude of the ellipsoid
 		for (int amplitude = 1; amplitude < MAX_AMPLITUDE; amplitude++) {
-
+			
 			// rotate around the axis
 			for (float phi = 0f; phi < period; phi += delta) {
-				if (CheckPathClear(collidersToExclude, start, finish, amplitude, phi)) {
-					paths.Add(new LinkedList<Vector3>(wayPoints));
+
+				// get waypoints and check for collisions
+				wayPoints.Clear();
+				GetPoints(start, finish, amplitude, phi);
+
+				if (wayPoints.Count > 0) {
+					IEnumerator enumerator = wayPoints.GetEnumerator ();
+					enumerator.MoveNext ();
+					Vector3 first = (Vector3)enumerator.Current;
+					Vector3 second;
+					HashSet<int> idList = new HashSet<int> ();
+
+					while (enumerator.MoveNext ()) {
+						second = (Vector3)enumerator.Current;
+						Ray ray = new Ray ();
+						ray.direction = second - first;
+						ray.origin = first;
+						RaycastHit[] hits = Physics.SphereCastAll (ray, WAYPOINT_SECTION_RADIUS, Vector3.Distance (first, second), 1);
+
+						yield return null;
+
+
+						foreach (RaycastHit hit in hits) {
+							if (hit.transform != null) {
+								idList.Add (hit.transform.gameObject.GetInstanceID ());
+							}
+						}
+
+						//Debug.DrawLine(first, second);
+						first = second;
+					}
+					// There are several scenarios.
+					// 1) User passed "transform from" and "transform to" objects to find path between them. In this case two (target transform) colliders
+					// should be excluded from the cast. 
+					// 2) User passed "transform from" and "vector3 to" objects. There is one excluded colliders in this case.
+					// 3) User passed "vector3 from" and "vector3 to" objects. There are no excluded colliders in this case. 
+					if (idList.Count <= (int)collidersToExclude) {
+						paths.Add(new LinkedList<Vector3>(wayPoints));
+					}
 				}
-				yield return null;
 			}
 
 			// randomize path selection
@@ -166,16 +201,17 @@ public sealed class PathFinder
 		callback(Path.EMPTY);
 	}
 
-
+	/*
 	private bool CheckPathClear(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, float amplitude, float phi)
 	{
 		wayPoints.Clear();
 		GetPoints(start, finish, amplitude, phi);
 		return !HasInterceptions(collidersToExclude);
 	}
+	*/
 
-
-	private bool HasInterceptions(CollidersToExclude collidersToExclude)
+	/*
+	private IEnumerator HasInterceptions(CollidersToExclude collidersToExclude, Action<bool> callback)
 	{
 		if (wayPoints.Count > 0) {
 			IEnumerator enumerator = wayPoints.GetEnumerator();
@@ -193,6 +229,8 @@ public sealed class PathFinder
 				ray.origin = first;
 				RaycastHit[] hits = Physics.SphereCastAll(ray, WAYPOINT_SECTION_RADIUS, Vector3.Distance(first, second), 1);
 
+				yield return null;
+
 				foreach (RaycastHit hit in hits) {
 					idList.Add(hit.transform.gameObject.GetInstanceID());
 				}
@@ -207,11 +245,11 @@ public sealed class PathFinder
 			// should be excluded from the cast. 
 			// 2) User passed "transform from" and "vector3 to" objects. There is one excluded colliders in this case.
 			// 3) User passed "vector3 from" and "vector3 to" objects. There are no excluded colliders in this case. 
-			return idList.Count > (int)collidersToExclude;
+			callback(idList.Count > (int)collidersToExclude);
 		}
-		return true;
+		callback(true);
 	}
-
+	*/
 
 	private void GetPoints(Vector3 start, Vector3 finish, float amplitude, float phi)
 	{
