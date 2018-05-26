@@ -25,11 +25,12 @@ public sealed class PathFinder
 	private const int LAYER_DEFAULT = 0;
 	private const int BACKWARD_RANDOM_SEARCH_ITERATIONS = 10;
 	private const int BACKWARD_RADIUS = 10;
+	private const int MIN_STEPS_NUMBER = 7;
 
 	#endregion
 
 
-	public PathFinder(MonoBehaviour mono)
+	public PathFinder (MonoBehaviour mono)
 	{
 		this.mono = mono;
 	}
@@ -37,164 +38,155 @@ public sealed class PathFinder
 
 	#region FIELDS
 
-
-
-	private LinkedList<Vector3> wayPoints = new LinkedList<Vector3>();
-	private SortedList<float, Vector3> values = new SortedList<float, Vector3>();
+	private LinkedList<Vector3> wayPoints = new LinkedList<Vector3> ();
 	private MonoBehaviour mono;
 	private Coroutine coroutine;
 
 	#endregion
 
 
-
-	public void FindPathFollow(Transform from, Transform to, System.Action<LinkedList<Vector3>> callback)
-	{
-		FindPath(from, to.position, (wayPoints) => {
-			callback(wayPoints);
-		});
-	}
-
-
-	public void FindPathAround(Transform from, Vector3 to, float radius, System.Action<LinkedList<Vector3>> callback)
+	public void FindPathAround (Transform from, Vector3 to, float radius, System.Action<LinkedList<Vector3>> callback)
 	{
 		Vector3 center = to;
-		Vector3 pointAround = center + new Vector3(Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f).normalized * radius;
-		FindPath(from, pointAround, (wayPoints) => {
-			callback(wayPoints);
+		Vector3 pointAround = center + new Vector3 (Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f).normalized * radius;
+		FindPath (from, pointAround, (wayPoints) => {
+			callback (wayPoints);
 		});
 	}
 
 
-	public void FindPath(Transform from, Vector3 to, System.Action<LinkedList<Vector3>> callback)
+	public void FindPath (Transform from, Vector3 to, System.Action<LinkedList<Vector3>> callback)
 	{
-		Find(CollidersToExclude.One, from.position, to, (wayPoints) => {
-			callback(wayPoints);
+		Find (CollidersToExclude.One, from.position, to, (wayPoints) => {
+			callback (wayPoints);
 		});
 	}
 
-	public void FindPath(Transform from, Transform to, System.Action<LinkedList<Vector3>> callback)
+	public void FindPath (Transform from, Transform to, System.Action<LinkedList<Vector3>> callback)
 	{
-		Find(CollidersToExclude.Two, from.position, to.position, (wayPoints) => {
-			callback(wayPoints);
+		Find (CollidersToExclude.Two, from.position, to.position, (wayPoints) => {
+			callback (wayPoints);
 		});
 	}
 
 
-	private void Find(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
+	private void Find (CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
 	{	
-
 		if (coroutine != null) {
-			mono.StopCoroutine(coroutine);
+			mono.StopCoroutine (coroutine);
 		}
 
-		coroutine = mono.StartCoroutine(FindForward(collidersToExclude, start, finish, wayPoints => {
+		coroutine = mono.StartCoroutine (FindForward (collidersToExclude, start, finish, wayPoints => {
 			bool pathFound = wayPoints.Count > 0;
 			if (pathFound) {
-				callback(wayPoints);
+				callback (wayPoints);
 			} else { 
-				//coroutine = mono.StartCoroutine(FindBackward(collidersToExclude, start, finish, backWayPoints => {
-				//	callback(wayPoints);
-				//}));
+				coroutine = mono.StartCoroutine (FindBackward (collidersToExclude, start, finish, backWayPoints => {
+					callback (backWayPoints);
+				}));
 			}
 		}));
 	}
 
 
-	private IEnumerator FindBackward(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
+	private IEnumerator FindBackward (CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
 	{
-		var quaternion = Quaternion.LookRotation(start - finish);
-		values.Clear();
+		var quaternion = Quaternion.LookRotation (start - finish);
 
 		for (int i = 0; i < BACKWARD_RANDOM_SEARCH_ITERATIONS; i++) {
-			float x = Random.Range(-BACKWARD_RADIUS, BACKWARD_RADIUS);
-			float y = Random.Range(-BACKWARD_RADIUS, BACKWARD_RADIUS);
-			float z = Random.Range(-BACKWARD_RADIUS, BACKWARD_RADIUS);
+			float x = Random.Range (-BACKWARD_RADIUS, BACKWARD_RADIUS);
+			float y = Random.Range (-BACKWARD_RADIUS, BACKWARD_RADIUS);
+			float z = Random.Range (-BACKWARD_RADIUS, BACKWARD_RADIUS);
 
-			Vector3 point = start + quaternion * new Vector3(x, y, z);
+			Vector3 point = start + quaternion * new Vector3 (x, y, z);
 
-			Ray ray = new Ray();
+			Ray ray = new Ray ();
 			ray.direction = point - start;
 			ray.origin = start;
-			RaycastHit[] hits = Physics.SphereCastAll(ray, WAYPOINT_SECTION_RADIUS, Vector3.Distance(point, start));
-			if (hits.Length == 0) {
+			RaycastHit[] hits = Physics.SphereCastAll (ray, WAYPOINT_SECTION_RADIUS, Vector3.Distance (point, start));
+			if (hits.Length <= ((int)collidersToExclude - 1)) {
 
-				Debug.DrawLine(point, point * 1.05f);
+				//Debug.DrawLine (point, point * 1.05f);
 
-				yield return mono.StartCoroutine (FindForward(collidersToExclude, point, finish, wayPoints => {
-					bool pathFound = wayPoints.Count > 0;
+				CollidersToExclude excluded = (CollidersToExclude)((int)collidersToExclude - 1);
+				bool pathFound = false;
+
+				yield return mono.StartCoroutine (FindForward (excluded, point, finish, wayPoints => {
+					pathFound = wayPoints.Count > 0;
 					if (pathFound) {
-						callback(wayPoints);
+						wayPoints.AddFirst(start);
+						callback (wayPoints);
 					}
 				}));
+
+				if (pathFound) {
+					yield break;
+				}
 			}
-		}
-			
+		}	
 		callback (Path.EMPTY);
 	}
 
 
-	private IEnumerator FindForward(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
+	private IEnumerator FindForward (CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
 	{
 		float period = 2f * Mathf.PI;
 		float delta = period / TRACE_SEGMENTS;
-		List<LinkedList<Vector3>> paths = new List<LinkedList<Vector3>>();
+		List<LinkedList<Vector3>> paths = new List<LinkedList<Vector3>> ();
 
 		// enlarge amplitude of the ellipsoid
-		for (int amplitude = 1; amplitude < MAX_AMPLITUDE; amplitude++) {
+		for (int amplitude = 1; amplitude < MAX_AMPLITUDE; amplitude *= 2) {
 			
 			// rotate around the axis
 			for (float phi = 0; phi < period; phi += delta) {
 				if (CheckPathClear (collidersToExclude, start, finish, amplitude, phi)) {
-					paths.Add (wayPoints);
+					paths.Add (new LinkedList<Vector3> (wayPoints));
 				}
 			}
 
 			// randomize path selection
 			if (paths.Count > 0) {
-				int selectedPath = Random.Range(0, paths.Count);
-				callback(paths[selectedPath]);
+				int selectedPath = Random.Range (0, paths.Count);
+				callback (paths [selectedPath]);
 				yield break;
 			}
 
 			yield return null;
 		}
-		callback(Path.EMPTY);
+		callback (Path.EMPTY);
 	}
 
 
-	private bool CheckPathClear(CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, float amplitude, float phi)
+	private bool CheckPathClear (CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, float amplitude, float phi)
 	{
-		wayPoints.Clear();
-		GetPoints(start, finish, amplitude, phi);
-		return !HasInterceptions(collidersToExclude);
+		wayPoints.Clear ();
+		GetPoints (start, finish, amplitude, phi);
+		return !HasInterceptions (collidersToExclude);
 	}
 
 
-
-	private bool HasInterceptions(CollidersToExclude collidersToExclude)
+	private bool HasInterceptions (CollidersToExclude collidersToExclude)
 	{
 		if (wayPoints.Count > 0) {
-			IEnumerator enumerator = wayPoints.GetEnumerator();
-			enumerator.MoveNext();
+			IEnumerator enumerator = wayPoints.GetEnumerator ();
+			enumerator.MoveNext ();
 			Vector3 first = (Vector3)enumerator.Current;
 			Vector3 second;
 
-			HashSet<int> idList = new HashSet<int>();
+			HashSet<int> idList = new HashSet<int> ();
 
-			while (enumerator.MoveNext()) {
+			while (enumerator.MoveNext ()) {
 				second = (Vector3)enumerator.Current;
 
-				Ray ray = new Ray();
+				Ray ray = new Ray ();
 				ray.direction = second - first;
 				ray.origin = first;
-				RaycastHit[] hits = Physics.SphereCastAll(ray, WAYPOINT_SECTION_RADIUS, Vector3.Distance(first, second));
+				RaycastHit[] hits = Physics.SphereCastAll (ray, WAYPOINT_SECTION_RADIUS, Vector3.Distance (first, second));
+
 
 				foreach (RaycastHit hit in hits) {
-					idList.Add(hit.transform.gameObject.GetInstanceID());
+					idList.Add (hit.transform.gameObject.GetInstanceID ());
 				}
-					
-				//Debug.DrawLine(first, second);
 
 				first = second;
 			}
@@ -211,46 +203,51 @@ public sealed class PathFinder
 	}
 
 
-	private void GetPoints(Vector3 start, Vector3 finish, float amplitude, float phi)
+	private void GetPoints (Vector3 start, Vector3 finish, float amplitude, float phi)
 	{
-		var quaternion = Quaternion.LookRotation(start - finish);
+		var quaternion = Quaternion.LookRotation (start - finish);
 		Vector3 center = (start + finish) / 2f;
-		float dist = Vector3.Distance(start, finish);
+		float dist = Vector3.Distance (start, finish);
 		float rad = dist / 2f;
 		float theta = 0;
-		int steps = 10;//Mathf.RoundToInt(rad / 2);
+
+		int steps = Mathf.RoundToInt(rad / 2);
+		if (steps < MIN_STEPS_NUMBER) {
+			steps = MIN_STEPS_NUMBER;
+		}
+
 		float deltaT = Mathf.PI / steps;
 
 		while (steps-- >= 0) {
-			var tmp = amplitude * Mathf.Sin(theta);
-			float x = tmp * Mathf.Cos(phi);
-			float y = tmp * Mathf.Sin(phi);
-			float z = rad * Mathf.Cos(theta);
-			Vector3 point = center + quaternion * new Vector3(x, y, z);
-			wayPoints.AddLast(point);
+			var tmp = amplitude * Mathf.Sin (theta);
+			float x = tmp * Mathf.Cos (phi);
+			float y = tmp * Mathf.Sin (phi);
+			float z = rad * Mathf.Cos (theta);
+			Vector3 point = center + quaternion * new Vector3 (x, y, z);
+			wayPoints.AddLast (point);
 			theta += deltaT;
 		}
 	}
 
 
-	public bool IsTargetVisible(Vector3 start, Transform target)
+	public bool IsTargetVisible (Vector3 start, Transform target)
 	{
 		Vector3 direction = target.position - start;
-		float distance = Vector3.Distance(start, target.position);
+		float distance = Vector3.Distance (start, target.position);
 		RaycastHit hit;
-		if (Physics.Raycast(start, direction, out hit, distance) && hit.collider.gameObject == target.gameObject) {
+		if (Physics.Raycast (start, direction, out hit, distance) && hit.collider.gameObject == target.gameObject) {
 			return true;
 		}
 		return false;
 	}
 
 
-	public bool IsLookAtTarget(Transform from, Transform to)
+	public bool IsLookAtTarget (Transform from, Transform to)
 	{
 		Vector3 direction = from.forward;
 		RaycastHit hit;
-		if (Physics.Raycast(from.position, direction, out hit, ItemAI.ATTACK_RADIUS)) {
-			if (hit.transform.Equals(to)) {
+		if (Physics.Raycast (from.position, direction, out hit, ItemAI.ATTACK_RADIUS)) {
+			if (hit.transform.Equals (to)) {
 				return true;
 			}
 		}

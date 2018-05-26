@@ -114,7 +114,7 @@ public class DefenceStrategy : BaseStrategy
 	{
 		// followed enemy has disappeared
 		if (CheckEnemyInvisible()) {
-			pathFinder.FindPathFollow(obj, targetObj, wayPoints => {
+			pathFinder.FindPath(obj, targetObj, wayPoints => {
 				if (wayPoints.Count > 0) {
 					path.SetWayPoints(wayPoints);
 					state = State.FollowPath;
