@@ -26,6 +26,7 @@ public sealed class PathFinder
 	private const int BACKWARD_RANDOM_SEARCH_ITERATIONS = 10;
 	private const int BACKWARD_RADIUS = 10;
 	private const int MIN_STEPS_NUMBER = 7;
+	private const int MAX_STEPS_NUMBER = 20;
 
 	#endregion
 
@@ -212,9 +213,7 @@ public sealed class PathFinder
 		float theta = 0;
 
 		int steps = Mathf.RoundToInt(rad / 2);
-		if (steps < MIN_STEPS_NUMBER) {
-			steps = MIN_STEPS_NUMBER;
-		}
+		steps = Mathf.Clamp (steps, MIN_STEPS_NUMBER, MAX_STEPS_NUMBER);
 
 		float deltaT = Mathf.PI / steps;
 

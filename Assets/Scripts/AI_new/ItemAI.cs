@@ -9,7 +9,7 @@ public class ItemAI : CommonShipController
 
 	public const float FORCE = 0.2f;
 	public const float BOUND_RADIUS = 5f;
-	public const float ROTATION_SPEED = 1f;
+	public const float ROTATION_SPEED = 1.5f;
 
 	public const float VIEW_RADIUS = 200f;
 	public const float ATTACK_RADIUS = 100f;

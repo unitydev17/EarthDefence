@@ -4,10 +4,10 @@ using System.Collections;
 using UnityEngine;
 
 
-public class DefenceStrategy : BaseStrategy
+public class AttackStrategy : BaseStrategy
 {
 
-	private Transform defenceTarget;
+	private Transform attackTarget;
 	private float radius;
 	private ItemAI itemAI;
 	private PathFinder pathFinder;
@@ -15,11 +15,11 @@ public class DefenceStrategy : BaseStrategy
 	private float time;
 
 
-	public DefenceStrategy(MonoBehaviour mono, Transform obj, Transform defenceTarget)
+	public AttackStrategy(MonoBehaviour mono, Transform obj, Transform attackTarget)
 	{
 		this.obj = obj;
-		this.defenceTarget = defenceTarget;
-		this.radius = GetRadius(defenceTarget) * 2f;
+		this.attackTarget = attackTarget;
+		this.radius = GetRadius(attackTarget) * 2f;
 		state = State.CreatePath;
 		itemAI = obj.GetComponent<ItemAI>();
 		pathFinder = new PathFinder(mono);
@@ -35,7 +35,7 @@ public class DefenceStrategy : BaseStrategy
 	{
 
 		if (State.CreatePath == state) {
-			CreatePathToDefendedTarget_Logic();
+			CreatePathToAttackedTarget_Logic();
 		}
 
 		if (State.RepeatCreatePath == state) {
@@ -74,13 +74,16 @@ public class DefenceStrategy : BaseStrategy
 	void MoveToBase_Logic()
 	{
 		MoveRotate(path.GetCurrent());
+		//DrawWay (path.GetWayPoints ());
 	}
 
 
-	void CreatePathToDefendedTarget_Logic()
+
+	void CreatePathToAttackedTarget_Logic()
 	{
 		repeatStart = Time.time;
-		pathFinder.FindPathAround(obj, defenceTarget.position, radius, wayPoints => {
+		state = State.WaitPathFind;
+		pathFinder.FindPathAround(obj, attackTarget.position, radius, wayPoints => {
 			if (wayPoints.Count > 0) {
 				path.SetWayPoints(wayPoints);
 				state = State.MoveBase;
@@ -88,7 +91,6 @@ public class DefenceStrategy : BaseStrategy
 				state = State.RepeatCreatePath;
 			}
 		});
-		state = State.WaitPathFind;
 	}
 
 
@@ -149,7 +151,11 @@ public class DefenceStrategy : BaseStrategy
 
 	private bool CheckStopAttack()
 	{
-		float distance = Vector3.Distance(obj.position, defenceTarget.position);
+		if (targetObj == null) {
+			return false;
+		}
+
+		float distance = Vector3.Distance(obj.position, targetObj.position);
 		return distance > ItemAI.ATTACK_STOP_DISTANCE;
 	}
 
@@ -177,7 +183,7 @@ public class DefenceStrategy : BaseStrategy
 	{
 		Collider[] colliders = Physics.OverlapSphere(obj.position, ItemAI.VIEW_RADIUS);
 		foreach (Collider collider in colliders) {
-			if (collider.tag == "Player" || collider.tag == "PlayerTeam") {
+			if (collider.tag == "Enemy") {
 				targetObj = collider.transform;
 				return true;
 			}

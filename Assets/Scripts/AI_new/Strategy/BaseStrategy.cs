@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 
 public abstract class BaseStrategy
@@ -95,4 +97,26 @@ public abstract class BaseStrategy
 		float distance = Vector3.Distance(obj.position, targetObj.position);
 		return distance <= ItemAI.ATTACK_RADIUS;
 	}
+
+
+	#region DEBUG
+
+	protected void DrawWay (LinkedList<Vector3> wayPoints)
+	{
+		if (wayPoints.Count == 0) {
+			return;
+		}
+
+		IEnumerator enumerator = wayPoints.GetEnumerator ();
+		enumerator.MoveNext ();
+		Vector3 first = (Vector3)enumerator.Current;
+		Vector3 second;
+		while (enumerator.MoveNext ()) {
+			second = (Vector3)enumerator.Current;
+			Debug.DrawLine (first, second);
+			first = second;
+		}
+	}
+
+	#endregion
 }
