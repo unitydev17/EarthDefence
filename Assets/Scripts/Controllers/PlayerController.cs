@@ -25,6 +25,7 @@ public class PlayerController : CommonShipController
 	public const float BULLET_SPAWN_DISTANCE = 0.5f;
 	private const float SHIP_STOPPED_SPEED = 1f;
 	private const int CHAIN_FIRE_NUMBERS = 3;
+	private const float CHAIN_FIRE_DELAY = 0.02f;
 
 	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
 	private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
@@ -46,7 +47,7 @@ public class PlayerController : CommonShipController
 	private bool isAlive;
 
 
-	void Start()
+	protected override void Start()
 	{
 		base.Start();
 		centralPS = centralEngine.GetComponent<ParticleSystem>();
@@ -81,7 +82,7 @@ public class PlayerController : CommonShipController
 	{
 		if (GunState.Fire == gunState) {
 				
-			if (Time.time - startChainTime > 0.02f) {
+			if (Time.time - startChainTime > CHAIN_FIRE_DELAY) {
 
 				if (++chainFireNumber == CHAIN_FIRE_NUMBERS) {
 					gunState = GunState.Idle;

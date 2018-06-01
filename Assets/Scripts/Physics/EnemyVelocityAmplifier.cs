@@ -24,7 +24,7 @@ public class EnemyVelocityAmplifier : MonoBehaviour
 
 	void Start()
 	{
-		target = GetComponent<EnemyAIOld>().GetPlayer();
+		target = GetComponent<ItemAI>().GetPlayer();
 	}
 
 
@@ -40,7 +40,7 @@ public class EnemyVelocityAmplifier : MonoBehaviour
 
 		if (dist < SLOWAGE_DISTANCE) {
 
-			float multiplier = (dist - EnemyAIOld.MIN_ATTACK_DISTANCE) / (SLOWAGE_DISTANCE - EnemyAIOld.MIN_ATTACK_DISTANCE);
+			float multiplier = (dist - ItemAI.ATTACK_RADIUS) / (SLOWAGE_DISTANCE - ItemAI.ATTACK_RADIUS);
 			float maxVelocity = CommonShipController.MAX_VELOCITY * multiplier;
 					
 			if (rigidbodyCached.velocity.magnitude >= maxVelocity) {
