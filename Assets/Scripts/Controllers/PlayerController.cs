@@ -23,10 +23,13 @@ public class PlayerController : CommonShipController
 		Fire
 	}
 
+	public const float MAX_PLAYER_SPEED = 10f;
 	public const float BULLET_SPAWN_DISTANCE = 0.5f;
+
 	private const float SHIP_STOPPED_SPEED = 1f;
 	private const int CHAIN_FIRE_NUMBERS = 3;
 	private const float CHAIN_FIRE_DELAY = 0.02f;
+
 
 	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
 	private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
@@ -161,6 +164,10 @@ public class PlayerController : CommonShipController
 
 	void MoveForward()
 	{
+		if (rigidBody.velocity.magnitude >= MAX_PLAYER_SPEED) {
+			return;
+		}
+
 		Vector3 forceForward = Vector3.Lerp(Vector3.zero, transform.forward, Time.deltaTime * SHIP_ACCELERATION);
 		rigidBody.AddForce(forceForward, ForceMode.Impulse);
 		EnginesForceUp();
