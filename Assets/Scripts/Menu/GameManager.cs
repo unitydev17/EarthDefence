@@ -21,8 +21,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public event Action<bool> OnPause = delegate { };
-
     private bool isPause;
 
     private void Update()
@@ -39,18 +37,21 @@ public class GameManager : MonoBehaviour
         {
             return isPause;
         }
+
         set
         {
             isPause = value;
-            OnPause.Invoke(isPause);
-            if (isPause == true)
+            if (isPause)
             {
                 Time.timeScale = 0;
                 Cursor.visible = true;
+				CrossHairController.isEnabled = false;
             }
             else
             {
                 Time.timeScale = 1;
+				Cursor.visible = false;
+				CrossHairController.isEnabled = true;
             }
         }
     }

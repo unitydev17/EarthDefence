@@ -47,7 +47,7 @@ public class ItemAI : CommonShipController
 			RemoveItemFromParent ();
 		}
 
-		if (gameObject.activeInHierarchy) {
+		if (gameObject != null && gameObject.activeInHierarchy) {
 			strategy.Perform ();
 		}
 

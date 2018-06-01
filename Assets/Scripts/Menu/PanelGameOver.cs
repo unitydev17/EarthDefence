@@ -4,25 +4,27 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class PanelPause : MonoBehaviour
+public class PanelGameOver : MonoBehaviour
 {
-
-    public void Continue()
-    {
-        GameManager.Instance.IsPause = false;
-        gameObject.SetActive(false);
-        Cursor.visible = false;
-    }
 
     public void Exit()
     {
+		UnsubscribeListeners ();
         SceneManager.LoadScene(0);
         Time.timeScale = 1;
     }
 
 	public void Retry()
 	{
+		UnsubscribeListeners ();
+		Time.timeScale = 1;
 		SceneManager.LoadScene ("Scene1");
+	}
+
+	public void UnsubscribeListeners() {
+		GameController.UnsubscribeAll ();
+		PlayerController.UnsubscribeAll ();
+		Pools.Instance.ClearAll ();
 	}
 
 }

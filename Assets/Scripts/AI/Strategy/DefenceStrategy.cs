@@ -15,47 +15,48 @@ public class DefenceStrategy : BaseStrategy
 	private float _time;
 
 
-	public DefenceStrategy(MonoBehaviour mono, Transform obj, Transform defenceTarget)
+	public DefenceStrategy (MonoBehaviour mono, Transform obj, Transform defenceTarget)
 	{
 		this.obj = obj;
 		this._defenceTarget = defenceTarget;
-		this._radius = GetRadius(defenceTarget) * 2f;
+		this._radius = GetRadius (defenceTarget) * 2f;
 		state = State.CreatePath;
-		_itemAI = obj.GetComponent<ItemAI>();
-		_pathFinder = new PathFinder(mono);
+		_itemAI = obj.GetComponent<ItemAI> ();
+		_pathFinder = new PathFinder (mono);
 		_time = Time.time;
 	}
 
-	private float GetRadius(Transform transform) {
-		var bounds = transform.GetComponent<MeshRenderer>().bounds;
+	private float GetRadius (Transform transform)
+	{
+		var bounds = transform.GetComponent<MeshRenderer> ().bounds;
 		return bounds.extents.magnitude * transform.localScale.magnitude;
 	}
 
-	public override void Perform()
+	public override void Perform ()
 	{
 
 		if (State.CreatePath == state) {
-			CreatePathToDefendedTarget_Logic();
+			CreatePathToDefendedTarget_Logic ();
 		}
 
 		if (State.RepeatCreatePath == state) {
-			RecreatePath_Logic();
+			RecreatePath_Logic ();
 		}
 
 		if (State.MoveBase == state) {
-			MoveToBase_Logic();
+			MoveToBase_Logic ();
 		}
 
 		if (State.FollowAndAttack != state) {
-			ObserveEnemies_Logic();
+			ObserveEnemies_Logic ();
 		}
 			
 		if (State.FollowAndAttack == state) {
-			FollowEnemy_Logic();
+			FollowEnemy_Logic ();
 		}
 
 		if (State.FollowPath == state) {
-			FollowPath_Logic();
+			FollowPath_Logic ();
 		}
 
 		if (State.MoveBase != state) {
@@ -66,27 +67,27 @@ public class DefenceStrategy : BaseStrategy
 	}
 
 
-	void CheckAttackFinished_Logic()
+	void CheckAttackFinished_Logic ()
 	{
-		if (CheckStopAttack()) {
+		if (CheckStopAttack ()) {
 			state = State.CreatePath;
 		}
 	}
 
 
-	void MoveToBase_Logic()
+	void MoveToBase_Logic ()
 	{
-		MoveRotate(path.GetCurrent());
+		MoveRotate (path.GetCurrent ());
 	}
 
 
-	void CreatePathToDefendedTarget_Logic()
+	void CreatePathToDefendedTarget_Logic ()
 	{
 		_repeatStart = Time.time;
 		state = State.WaitPathFind;
-		_pathFinder.FindPathRandomTraectory(obj, _defenceTarget.position, _radius, wayPoints => {
+		_pathFinder.FindPathRandomTraectory (obj, _defenceTarget.position, _radius, wayPoints => {
 			if (wayPoints.Count > 0) {
-				path.SetWayPoints(wayPoints);
+				path.SetWayPoints (wayPoints);
 				state = State.MoveBase;
 			} else {
 				state = State.RepeatCreatePath;
@@ -96,7 +97,7 @@ public class DefenceStrategy : BaseStrategy
 
 
 	// Recreate path if last attempt failed
-	void RecreatePath_Logic()
+	void RecreatePath_Logic ()
 	{
 		if ((Time.time - _repeatStart) > REPEAT_PATH_WAIT) {
 			state = State.CreatePath;
@@ -105,7 +106,7 @@ public class DefenceStrategy : BaseStrategy
 
 
 	// Find path to border violator and stand up to attack
-	void ObserveEnemies_Logic()
+	void ObserveEnemies_Logic ()
 	{
 		if (CheckEnemyRadarDetect () && CheckEnemyVisible ()) {
 			state = State.FollowAndAttack;
@@ -114,14 +115,14 @@ public class DefenceStrategy : BaseStrategy
 
 
 	// Follow enemy and fire if possible
-	void FollowEnemy_Logic()
+	void FollowEnemy_Logic ()
 	{
 		// followed enemy has disappeared
-		if (CheckEnemyInvisible()) {
+		if (CheckEnemyInvisible ()) {
 			state = State.WaitFollowPathFind;
-			_pathFinder.FindPath(obj, targetObj, wayPoints => {
+			_pathFinder.FindPath (obj, targetObj, wayPoints => {
 				if (wayPoints.Count > 0) {
-					path.SetWayPoints(wayPoints);
+					path.SetWayPoints (wayPoints);
 					state = State.FollowPath;
 				} else {
 					state = State.FollowAndAttack;
@@ -131,56 +132,56 @@ public class DefenceStrategy : BaseStrategy
 		}
 
 		// apply movements
-		if (CheckAttackDistanceReached()) {
-			RotateOnly(targetObj.position);
+		if (CheckAttackDistanceReached ()) {
+			RotateOnly (targetObj.position);
 		} else {
-			MoveRotate(targetObj.position);	
+			MoveRotate (targetObj.position);	
 		}
 
 		// shoot if possible
-		if (CheckFirePossible()) {
-			Fire();
+		if (CheckFirePossible ()) {
+			Fire ();
 		}
 	}
 
 
-	void FollowPath_Logic()
+	void FollowPath_Logic ()
 	{
-		MoveRotate(path.GetCurrent());
+		MoveRotate (path.GetCurrent ());
 	}
 
 
-	private bool CheckStopAttack()
+	private bool CheckStopAttack ()
 	{
-		float distance = Vector3.Distance(obj.position, _defenceTarget.position);
+		float distance = Vector3.Distance (obj.position, _defenceTarget.position);
 		return distance > ItemAI.ATTACK_STOP_DISTANCE;
 	}
 
 
-	private void Fire()
+	private void Fire ()
 	{
 		float deltaTime = Time.time - _time;
 		if (deltaTime > ItemAI.FIRE_FREQUENCY) {
-			_itemAI.Fire();
+			_itemAI.Fire ();
 			_time = Time.time;
 		}
 	}
 
 
-	private bool CheckFirePossible()
+	private bool CheckFirePossible ()
 	{
-		float distance = Vector3.Distance(obj.position, targetObj.position);
+		float distance = Vector3.Distance (obj.position, targetObj.position);
 		bool firePossible = distance <= ItemAI.ATTACK_RADIUS;
-		firePossible &= _pathFinder.IsLookAtTarget(obj, targetObj);
+		firePossible &= _pathFinder.IsLookAtTarget (obj, targetObj);
 		return firePossible;
 	}
 
 
-	private bool CheckEnemyRadarDetect()
+	private bool CheckEnemyRadarDetect ()
 	{
-		Collider[] colliders = Physics.OverlapSphere(obj.position, ItemAI.VIEW_RADIUS);
+		Collider[] colliders = Physics.OverlapSphere (obj.position, ItemAI.VIEW_RADIUS);
 		foreach (Collider collider in colliders) {
-			if (IsEnemy(collider.tag)) {
+			if (IsEnemy (collider.tag)) {
 				targetObj = collider.transform;
 				return true;
 			}
@@ -195,15 +196,15 @@ public class DefenceStrategy : BaseStrategy
 	}
 
 
-	private bool CheckEnemyVisible()
+	private bool CheckEnemyVisible ()
 	{
-		return _pathFinder.IsTargetVisible(obj.position, targetObj);
+		return _pathFinder.IsTargetVisible (obj.position, targetObj);
 	}
 
 
-	private bool CheckEnemyInvisible()
+	private bool CheckEnemyInvisible ()
 	{
-		return !CheckEnemyVisible();
+		return !CheckEnemyVisible ();
 	}
 
 }

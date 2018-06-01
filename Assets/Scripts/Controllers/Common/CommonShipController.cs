@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 
 [RequireComponent(typeof(Rigidbody))]
@@ -14,7 +15,7 @@ public class CommonShipController : MonoBehaviour
 
 	private const float BULLET_SPEED = 200f;
 	private const float BULLET_LIFETIME_SEC = 3f;
-	private const float BULLET_DAMAGE = 10f;
+	private const float BULLET_DAMAGE = 5f;
 	private const float EXPLOSION_MAX_DISTANCE = 100f;
 	private const float EXPLOSION_FORCE = 300f;
 
@@ -68,20 +69,26 @@ public class CommonShipController : MonoBehaviour
 	public virtual void ProcessCommand(string command, object param)
 	{
 		if (GameController.EXPLOSION_IMPACT_COMMAND == command) {
-			ExplosionImpact(param);
+			ExplosionImpact (param);
 		}
 	}
 
 
 	void ExplosionImpact(object param)
 	{
-		Vector3 expCenter = (Vector3)param;
-		float distance = Vector3.Distance(expCenter, transform.position);
-		distance = Mathf.Clamp(distance, 0, EXPLOSION_MAX_DISTANCE);
-		Vector3 direction = (transform.position - expCenter).normalized;
-		Vector3 expForce = EXPLOSION_FORCE * direction * (1 - distance / EXPLOSION_MAX_DISTANCE);
-		rigidBody.AddForce(expForce);
-		//rigidBody.AddTorque(expForce);
+		try {
+			if (transform != null) {
+				Vector3 expCenter = (Vector3)param;
+				float distance = Vector3.Distance(expCenter, transform.position);
+				distance = Mathf.Clamp(distance, 0, EXPLOSION_MAX_DISTANCE);
+				Vector3 direction = (transform.position - expCenter).normalized;
+				Vector3 expForce = EXPLOSION_FORCE * direction * (1 - distance / EXPLOSION_MAX_DISTANCE);
+				rigidBody.AddForce(expForce);
+				//rigidBody.AddTorque(expForce);
+			}
+		} catch (Exception e) {
+			Debug.Log (e);
+		}
 	}
 
 
@@ -104,6 +111,10 @@ public class CommonShipController : MonoBehaviour
 		bullet.transform.localRotation = bulletRotation;
 		bullet.GetComponent<Rigidbody>().velocity = transform.forward * BULLET_SPEED + rigidBody.velocity;
 		StartCoroutine (DelayedDestroy(bullet, BULLET_LIFETIME_SEC));
+		if (player) {
+			float distance = Vector3.Distance (transform.position, player.transform.position);
+			SoundController.instance.BotFire (distance);
+		}
 	}
 
 
@@ -120,7 +131,7 @@ public class CommonShipController : MonoBehaviour
 		// Player shooted
 		if (gameObject.CompareTag(PLAYER_TAG)) {
 			if (other.gameObject.CompareTag(BULLET_TAG)) {
-				//health -= ENEMY_BULLET_DAMAGE;
+				health -= BULLET_DAMAGE;
 				SoundController.instance.ShipShoted();
 				ShotVFX(other);
 				if (health <= 0) {
@@ -168,6 +179,13 @@ public class CommonShipController : MonoBehaviour
 
 		_collider.enabled = false;
 		_renderer.enabled = false;
+		foreach (Transform child in gameObject.transform) {
+			TrailRenderer tr = child.GetComponent<TrailRenderer> ();
+			if (tr != null) {
+				tr.Clear ();
+			}
+		}
+
 		GameObject explosionParent = Pools.Instance.GetExplosion (transform.position);
 		explosionParent.transform.parent = GameController.root.transform;
 		var particleSystem = explosionParent.GetComponent<ParticleSystem>();

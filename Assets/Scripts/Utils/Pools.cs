@@ -46,6 +46,14 @@ public class Pools
 	private List<GameObject> playerBots = new List<GameObject> ();
 
 
+	public void ClearAll() {
+		enemyBullets.Clear();
+		playerBullets.Clear();
+		explosions.Clear();
+		enemyBots.Clear();
+		playerBots.Clear();
+	}
+
 
 	public GameObject GetPlayerBullet (Vector3 initPosition)
 	{
@@ -67,7 +75,7 @@ public class Pools
 		}
 
 		foreach (GameObject go in pool) {
-			if (!go.activeInHierarchy) {
+			if (go!=null && !go.activeInHierarchy) {
 				go.transform.position = initPosition;
 				go.transform.rotation = Quaternion.identity;
 				go.SetActive (true);
@@ -85,7 +93,7 @@ public class Pools
 	public GameObject GetExplosion (Vector3 initPosition)
 	{
 		foreach (GameObject go in explosions) {
-			if (!go.activeInHierarchy) {
+			if (go!=null && !go.activeInHierarchy) {
 				go.transform.position = initPosition;
 				go.transform.rotation = Random.rotation;
 				go.SetActive (true);
@@ -117,7 +125,7 @@ public class Pools
 		}
 
 		foreach (GameObject go in pool) {
-			if (!go.activeInHierarchy) {
+			if (go!=null && !go.activeInHierarchy) {
 				go.transform.position = initPosition;
 				go.transform.rotation = Quaternion.identity;
 				go.SetActive (true);

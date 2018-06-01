@@ -8,6 +8,7 @@ public class PlayerController : CommonShipController
 {
 	public static event Action<bool> eventHandlers;
     // test
+	public static event Action<string> playerEvents;
 
 	public enum MoveState
 	{
@@ -47,8 +48,22 @@ public class PlayerController : CommonShipController
 	private bool isAlive;
 
 
+	public static void UnsubscribeAll() {
+		Delegate[] clientList = eventHandlers.GetInvocationList ();
+		foreach (Delegate d in clientList) {
+			eventHandlers -= (d as Action<bool>);
+		}
+
+		clientList = playerEvents.GetInvocationList ();
+		foreach (Delegate d in clientList) {
+			playerEvents -= (d as Action<string>);
+		}
+	}
+
+
 	protected override void Start()
 	{
+
 		base.Start();
 		centralPS = centralEngine.GetComponent<ParticleSystem>();
 		leftPS = leftEngine.GetComponent<ParticleSystem>();
@@ -218,11 +233,38 @@ public class PlayerController : CommonShipController
 		transform.rotation = Quaternion.LookRotation(direction, transform.up);
 	}
 
+
 	override protected void ExplodeShip()
 	{
 		CrossHairController.isEnabled = false;
+		Cursor.visible = true;
+		StartCoroutine (BackTimeScale());
 		isAlive = false;
 		StopEngines();
 		base.ExplodeShip();
+		StartCoroutine (DelayedMenuInvokation ());
 	}
+
+
+	IEnumerator BackTimeScale() {
+		float timeScale = 1f;
+		float delta = 0.02f;
+		while (timeScale > 0) {
+			timeScale -= delta;
+			delta *= 1.01f;
+			if (timeScale < 0) {
+				timeScale = 0;
+			}
+			Time.timeScale = timeScale;
+			yield return null;
+		}
+	}
+
+
+	IEnumerator DelayedMenuInvokation() {
+		WaitForSeconds wait = new WaitForSeconds (1f);
+		yield return wait;
+		playerEvents (GameController.GAME_OVER_EVENT);
+	}
+
 }

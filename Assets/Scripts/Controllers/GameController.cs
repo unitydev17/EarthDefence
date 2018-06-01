@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour {
 	public const float EARTH_MOON_DISTANCE = 100f;
 	public const string PLANET_TAG = "Planet";
 	public const string ATTACK_COMMAND = "Attack";
+	public const string GAME_OVER_EVENT = "GameOver";
 	public const string EXPLOSION_IMPACT_COMMAND = "ExplosionImpact";
 
 
@@ -38,6 +39,14 @@ public class GameController : MonoBehaviour {
 		SetupPlanets();
 		//PlaceMoon();
 		//PlacePlayer();
+	}
+
+
+	public static void UnsubscribeAll() {
+		Delegate[] clientList = eventBus.GetInvocationList ();
+		foreach (Delegate d in clientList) {
+			eventBus -= (d as Action<string, object>);
+		}
 	}
 
 

@@ -8,7 +8,7 @@ public class MasterAI : MonoBehaviour
 {
 
 	[SerializeField]
-	private int MAX_ITEMS_COUNT = 1;
+	private int MAX_ITEMS_COUNT = 50;
 
 	[SerializeField]
 	private float SPAWN_TIME = 5f;
@@ -18,6 +18,7 @@ public class MasterAI : MonoBehaviour
 	public GameObject attackObj;
 
 	private List<GameObject> items;
+	private int counter;
 
 
 	void Awake()
@@ -28,13 +29,14 @@ public class MasterAI : MonoBehaviour
 
 	void Start()
 	{
+		counter = 0;
 		InvokeRepeating("SpawnItems", 0, SPAWN_TIME);
 	}
 
 
 	void SpawnItems()
 	{
-		if (items.Count >= MAX_ITEMS_COUNT) {
+		if (counter++ >= MAX_ITEMS_COUNT) {
 			return;
 		}
 
