@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4000011334895800}
   - component: {fileID: 33000013403861896}
   - component: {fileID: 23000014158224576}
-  - component: {fileID: 114938017386565624}
   - component: {fileID: 54788810466170426}
   - component: {fileID: 64517424998873038}
   m_Layer: 0
@@ -53,6 +52,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -68,6 +68,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -112,20 +113,3 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300008, guid: 6c11e79470dad4b4bb66b279d2660007, type: 3}
---- !u!114 &114938017386565624
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013772491214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fcaba9c479136246933d9ec7f80bb9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  markerGreenPrefab: {fileID: 1564301074543362, guid: 964c7f3c7ca873f419112020738a8e5b,
-    type: 2}
-  markerRedPrefab: {fileID: 1564301074543362, guid: e6f7b5bef3e09fe479e7539debba7978,
-    type: 2}
-  bulletPrefab: {fileID: 1264519983141168, guid: da3edf725a36f414aaf496ee4eae6b07,
-    type: 2}
