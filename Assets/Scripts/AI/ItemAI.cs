@@ -40,13 +40,6 @@ public class ItemAI : CommonShipController
 
 	void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.KeypadEnter)) {
-			gameObject.GetComponent<Collider>().enabled = false;
-			gameObject.GetComponent<Renderer>().enabled = false;
-			gameObject.SetActive (false);
-			RemoveItemFromParent ();
-		}
-
 		if (gameObject != null && gameObject.activeInHierarchy) {
 			strategy.Perform ();
 		}

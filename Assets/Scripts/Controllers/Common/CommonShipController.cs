@@ -16,21 +16,33 @@ public class CommonShipController : MonoBehaviour
 	private const float BULLET_SPEED = 200f;
 	private const float BULLET_LIFETIME_SEC = 3f;
 	private const float BULLET_DAMAGE = 5f;
+	private const float PLAYER_BULLET_DAMAGE = 2f;
 	private const float EXPLOSION_MAX_DISTANCE = 100f;
 	private const float EXPLOSION_FORCE = 300f;
 
-	public const float MAX_VELOCITY = 2500f;
-	protected const float SHIP_ACCELERATION = 80f;
+	public const float MAX_VELOCITY = 80f;
+	protected const float SHIP_ACCELERATION = 40f;
+	protected const float SHIP_DECELERATION = 10f;
 
 	public GameObject shotVFXPrefab;
 
 	protected Rigidbody rigidBody;
 
 	protected GameObject player;
-	protected float health;
 
-	private Collider _collider;
-	private Renderer _renderer;
+	private float health;
+	private float Health {
+		get { return health; }
+		set {
+			health = value;
+			UpdateHealthBar (health);
+		}
+	}
+
+	protected virtual void UpdateHealthBar(float health) {}
+
+	protected Collider _collider;
+	protected Renderer _renderer;
 
 
 
@@ -53,7 +65,7 @@ public class CommonShipController : MonoBehaviour
 
 	protected virtual void Start()
 	{
-		health = 100f;
+		Health = 100f;
 		rigidBody = GetComponent<Rigidbody>();
 		rigidBody.useGravity = false;
 
@@ -131,10 +143,10 @@ public class CommonShipController : MonoBehaviour
 		// Player shooted
 		if (gameObject.CompareTag(PLAYER_TAG)) {
 			if (other.gameObject.CompareTag(BULLET_TAG)) {
-				health -= BULLET_DAMAGE;
+				Health -= PLAYER_BULLET_DAMAGE;
 				SoundController.instance.ShipShoted();
 				ShotVFX(other);
-				if (health <= 0) {
+				if (Health <= 0) {
 					ExplodeShip();
 				}
 			}
@@ -142,10 +154,11 @@ public class CommonShipController : MonoBehaviour
 			// player teammates shooted
 			// enemy was shooted
 			if (other.gameObject.CompareTag(BULLET_TAG)) {
-				health -= BULLET_DAMAGE;
+				Health -= BULLET_DAMAGE;
+				ShotVFX(other);
 			}
 
-			if (health <= 0) {
+			if (Health <= 0) {
 				ExplodeShip();
 			}
 		}
@@ -169,7 +182,7 @@ public class CommonShipController : MonoBehaviour
 	void ExplosionSFX()
 	{
 		var distance = Vector3.Distance(transform.position, player.transform.position);
-		SoundController.instance.EnemyExplosion(distance);
+		SoundController.instance.Explosion(distance);
 	}
 
 
@@ -196,12 +209,16 @@ public class CommonShipController : MonoBehaviour
 		StartCoroutine(FadeLight(light, duration));
 			
 		StartCoroutine(DelayedDestroy(explosionParent, duration));
-		StartCoroutine(DelayedDestroy(gameObject, duration));
+		DestroyShip (duration);
 
 		RemoveItemFromParent ();
 
 		GameController.eventBus -= ProcessCommand;
 		GameController.ExplosionImpact(transform.position);
+	}
+
+	protected virtual void DestroyShip(float duration) {
+		StartCoroutine(DelayedDestroy(gameObject, duration));
 	}
 
 	// Stub. Could be implemented in ancestor classes.

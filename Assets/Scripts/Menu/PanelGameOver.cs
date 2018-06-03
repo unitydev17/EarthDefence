@@ -7,6 +7,14 @@ using UnityEngine.SceneManagement;
 public class PanelGameOver : MonoBehaviour
 {
 
+	void OnEnable() {
+		if (this.GetType() == typeof(PanelGameOver)) {
+			SoundController.instance.PlayStoryRetry ();
+		}
+		Cursor.visible = true;
+		CrossHairController.isEnabled = false;
+	}
+
     public void Exit()
     {
 		UnsubscribeListeners ();
@@ -24,6 +32,7 @@ public class PanelGameOver : MonoBehaviour
 	public void UnsubscribeListeners() {
 		GameController.UnsubscribeAll ();
 		PlayerController.UnsubscribeAll ();
+		MasterAI.UnsubscribeAll ();
 		Pools.Instance.ClearAll ();
 	}
 

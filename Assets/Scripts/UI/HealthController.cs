@@ -8,28 +8,17 @@ public class HealthController : MonoBehaviour
 
     public Image health;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            GetDamage(health);
-        }
-    }
+	void Awake() {
+		PlayerController.playerEvents += ProcessEvent;
+	}
 
-    public void GetDamage(Image healthLine)
-    {
-        StartCoroutine(Deleteline(healthLine));
-    }
-    public IEnumerator Deleteline(Image line)
-    {
-        int i = 0;
-        while (i <= 10)
-        {
-            line.fillAmount -= 0.02f;
-            i++;
-            yield return new WaitForSeconds(0.03f);
-        }
-        yield return null;
-    }
+
+	void ProcessEvent(string command, object param) {
+		if (GameController.HEALTH_UPDATE == command) {
+			float value = (float)param;
+			health.fillAmount = value / 100f;
+		}
+	}
+
 }
 

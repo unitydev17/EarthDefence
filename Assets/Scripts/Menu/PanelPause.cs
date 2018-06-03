@@ -11,7 +11,7 @@ public class PanelPause : MonoBehaviour
     {
         GameManager.Instance.IsPause = false;
         gameObject.SetActive(false);
-        Cursor.visible = false;
+		SoundController.instance.UnPauseBattleMusic ();
     }
 
     public void Exit()

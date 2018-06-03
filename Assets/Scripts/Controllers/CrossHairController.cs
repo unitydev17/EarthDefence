@@ -17,16 +17,25 @@ public class CrossHairController : MonoBehaviour
 
 	public GameObject crossHairStatic;
 	private GameObject crossHairDynamic;
-	private bool gameOverState;
+
 
 	void Awake() {
 		crossHairDynamic = gameObject;
+		PlayerController.playerEvents += ProcessEvents;
+		MasterAI.masterAIEvents += ProcessEvents;
+	}
+
+	private void ProcessEvents(string command, object param)
+	{
+		if (GameController.GAME_OVER_EVENT == command) {
+			crossHairStatic.SetActive (false);
+			crossHairDynamic.SetActive (false);
+		}
 	}
 
 
 	void Start()
 	{
-		gameOverState = false;
 		isEnabled = true;
 		Cursor.visible = false;
 		centerPosition = new Vector3(Screen.width / 2, Screen.height / 2);
@@ -39,11 +48,6 @@ public class CrossHairController : MonoBehaviour
 		if (isEnabled) {
 			HandleMouseDirections ();
 			UpdateTransform ();
-
-		} else if (!gameOverState) {
-			gameOverState = true;
-			crossHairStatic.SetActive (false);
-			crossHairDynamic.SetActive (false);
 		}
 	}
 

@@ -12,7 +12,11 @@ public class GameController : MonoBehaviour {
 	public const string PLANET_TAG = "Planet";
 	public const string ATTACK_COMMAND = "Attack";
 	public const string GAME_OVER_EVENT = "GameOver";
+	public const string GAME_WIN_EVENT = "GameWin";
+	public const string HEALTH_UPDATE = "HealthUpdate";
 	public const string EXPLOSION_IMPACT_COMMAND = "ExplosionImpact";
+	public const float GAME_OVER_DELAY = 5f;
+	public const float GAME_WIN_DELAY = 5f;
 
 
 	public static GameController instance;
@@ -39,6 +43,8 @@ public class GameController : MonoBehaviour {
 		SetupPlanets();
 		//PlaceMoon();
 		//PlacePlayer();
+
+		SoundController.instance.PlayBattleMusic ();
 	}
 
 

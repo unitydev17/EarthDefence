@@ -8,7 +8,7 @@ public class PlayerController : CommonShipController
 {
 	public static event Action<bool> eventHandlers;
     // test
-	public static event Action<string> playerEvents;
+	public static event Action<string, object> playerEvents;
 
 	public enum MoveState
 	{
@@ -23,7 +23,7 @@ public class PlayerController : CommonShipController
 		Fire
 	}
 
-	public const float MAX_PLAYER_SPEED = 10f;
+	//public const float MAX_PLAYER_SPEED = 30f;
 	public const float BULLET_SPAWN_DISTANCE = 0.5f;
 
 	private const float SHIP_STOPPED_SPEED = 1f;
@@ -59,7 +59,7 @@ public class PlayerController : CommonShipController
 
 		clientList = playerEvents.GetInvocationList ();
 		foreach (Delegate d in clientList) {
-			playerEvents -= (d as Action<string>);
+			playerEvents -= (d as Action<string, object>);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class PlayerController : CommonShipController
 
 	private void Update()
 	{
-		if (isAlive) {
+		if (isAlive && !GameManager.Instance.IsPause) {
 			HandleInput();
 			ProcessActions();
 		}
@@ -88,7 +88,7 @@ public class PlayerController : CommonShipController
 	private void OnGUI() {
 		GUI.TextArea(new Rect(0, 30, 100, 50), "Velocity: " + rigidBody.velocity.magnitude);
 	}
-
+	
 
 	private void LateUpdate()
 	{
@@ -164,9 +164,6 @@ public class PlayerController : CommonShipController
 
 	void MoveForward()
 	{
-		if (rigidBody.velocity.magnitude >= MAX_PLAYER_SPEED) {
-			return;
-		}
 
 		Vector3 forceForward = Vector3.Lerp(Vector3.zero, transform.forward, Time.deltaTime * SHIP_ACCELERATION);
 		rigidBody.AddForce(forceForward, ForceMode.Impulse);
@@ -225,7 +222,7 @@ public class PlayerController : CommonShipController
 	void Brake()
 	{
 		if (Mathf.Abs(rigidBody.velocity.magnitude) > SHIP_STOPPED_SPEED) {
-			Vector3 forceForward = Vector3.Lerp(Vector3.zero, rigidBody.velocity.normalized, Time.deltaTime * SHIP_ACCELERATION);
+			Vector3 forceForward = Vector3.Lerp(Vector3.zero, rigidBody.velocity.normalized, Time.deltaTime * SHIP_DECELERATION);
 			rigidBody.AddForce(-forceForward, ForceMode.Impulse);
 			return;
 		}
@@ -245,33 +242,21 @@ public class PlayerController : CommonShipController
 	{
 		CrossHairController.isEnabled = false;
 		Cursor.visible = true;
-		StartCoroutine (BackTimeScale());
 		isAlive = false;
 		StopEngines();
 		base.ExplodeShip();
-		StartCoroutine (DelayedMenuInvokation ());
+		playerEvents (GameController.GAME_OVER_EVENT, null);
 	}
 
 
-	IEnumerator BackTimeScale() {
-		float timeScale = 1f;
-		float delta = 0.02f;
-		while (timeScale > 0) {
-			timeScale -= delta;
-			delta *= 1.01f;
-			if (timeScale < 0) {
-				timeScale = 0;
-			}
-			Time.timeScale = timeScale;
-			yield return null;
-		}
+	protected override void DestroyShip(float duration) {
+		_renderer.enabled = false;
+		_collider.enabled = false;
 	}
 
 
-	IEnumerator DelayedMenuInvokation() {
-		WaitForSeconds wait = new WaitForSeconds (1f);
-		yield return wait;
-		playerEvents (GameController.GAME_OVER_EVENT);
+	protected override void UpdateHealthBar (float health)
+	{
+		playerEvents (GameController.HEALTH_UPDATE, health);
 	}
-
 }

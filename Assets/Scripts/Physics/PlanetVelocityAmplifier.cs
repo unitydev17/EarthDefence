@@ -9,7 +9,7 @@ public class PlanetVelocityAmplifier : MonoBehaviour {
 	private float RAD_1 = 0;
 
 	[SerializeField]
-	private float SLOWAGE_DISTANCE = 5000;
+	private float SLOWAGE_DISTANCE = 0;
 
 
 	Rigidbody rigidbodyCached;
