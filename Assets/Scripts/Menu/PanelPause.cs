@@ -16,6 +16,7 @@ public class PanelPause : MonoBehaviour
 
     public void Exit()
     {
+		GUIManager.UnsubscribeListeners ();
         SceneManager.LoadScene(0);
         Time.timeScale = 1;
     }

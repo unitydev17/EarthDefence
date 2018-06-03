@@ -12,6 +12,8 @@ public class GUIManager : MonoBehaviour
 
 
 	private void Awake() {
+		GameManager.Instance.IsPause = false;
+
 		PlayerController.playerEvents += ProcessEvents;
 		MasterAI.masterAIEvents += ProcessEvents;
 	}
@@ -39,7 +41,7 @@ public class GUIManager : MonoBehaviour
 	IEnumerator DelayedWinPanel() {
 		WaitForSeconds wait = new WaitForSeconds (GameController.GAME_WIN_DELAY);
 		yield return wait;
-		Time.timeScale = 0;
+		GameManager.Instance.IsPause = true;
 		panelGameWin.gameObject.SetActive (true);
 	}
 
@@ -47,14 +49,14 @@ public class GUIManager : MonoBehaviour
 	IEnumerator DelayedGameOverPanel() {
 		WaitForSeconds wait = new WaitForSeconds (GameController.GAME_OVER_DELAY);
 		yield return wait;
-		Time.timeScale = 0;
+		GameManager.Instance.IsPause = true;
 		panelGameOver.gameObject.SetActive (true);
 	}
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+		if (!GameManager.Instance.IsPause && Input.GetKeyDown(KeyCode.Escape))
         {
             GameManager.Instance.IsPause = true;
 			SoundController.instance.PauseBattleMusic ();
@@ -62,5 +64,12 @@ public class GUIManager : MonoBehaviour
         }
     }
 
+
+	public static void UnsubscribeListeners() {
+		GameController.UnsubscribeAll ();
+		PlayerController.UnsubscribeAll ();
+		MasterAI.UnsubscribeAll ();
+		Pools.Instance.ClearAll ();
+	}
 }
 

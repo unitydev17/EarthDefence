@@ -17,23 +17,16 @@ public class PanelGameOver : MonoBehaviour
 
     public void Exit()
     {
-		UnsubscribeListeners ();
+		GUIManager.UnsubscribeListeners ();
         SceneManager.LoadScene(0);
-        Time.timeScale = 1;
+		GameManager.Instance.IsPause = true;
     }
 
 	public void Retry()
 	{
-		UnsubscribeListeners ();
-		Time.timeScale = 1;
+		GUIManager.UnsubscribeListeners ();
+		GameManager.Instance.IsPause = false;
 		SceneManager.LoadScene ("Scene1");
-	}
-
-	public void UnsubscribeListeners() {
-		GameController.UnsubscribeAll ();
-		PlayerController.UnsubscribeAll ();
-		MasterAI.UnsubscribeAll ();
-		Pools.Instance.ClearAll ();
 	}
 
 }

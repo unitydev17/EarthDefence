@@ -60,6 +60,12 @@ public class MasterAI : MonoBehaviour
 	}
 
 
+	void Update() {
+		if (Input.GetKeyDown (KeyCode.Alpha1)) {
+			masterAIEvents (GameController.GAME_OVER_EVENT, null);
+		}
+	}
+
 	void SpawnItems()
 	{
 		
