@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayButton : MonoBehaviour
+public class MainMenu : MonoBehaviour
 {
 
     public void Play()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void Credits()
+    {
+        SceneManager.LoadScene(5);
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
