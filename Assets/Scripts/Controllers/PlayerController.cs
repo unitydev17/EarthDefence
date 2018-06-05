@@ -27,8 +27,8 @@ public class PlayerController : CommonShipController
 	public const float BULLET_SPAWN_DISTANCE = 0.5f;
 
 	private const float SHIP_STOPPED_SPEED = 1f;
-	private const int CHAIN_FIRE_NUMBERS = 3;
-	private const float CHAIN_FIRE_DELAY = 0.02f;
+	private const int CHAIN_FIRE_NUMBERS = 2;
+	private const float CHAIN_FIRE_DELAY = 0.1f;
 
 
 	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
