@@ -56,4 +56,15 @@ public class ItemAI : CommonShipController
 	{
 		masterAI.RemoveEnemy (gameObject);
 	}
+
+
+	protected override void ProcessCommand(string command, object param)
+	{
+		base.ProcessCommand (command, param);
+
+		if (GameController.GAME_OVER_EVENT == command || GameController.GAME_WIN_EVENT == command) {
+			strategy.Reinitialize ();
+		}
+	}
+
 }

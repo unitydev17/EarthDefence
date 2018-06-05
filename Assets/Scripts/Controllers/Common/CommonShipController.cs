@@ -20,9 +20,9 @@ public class CommonShipController : MonoBehaviour
 	private const float EXPLOSION_MAX_DISTANCE = 100f;
 	private const float EXPLOSION_FORCE = 300f;
 
-	public const float MAX_VELOCITY = 80f;
+	public const float MAX_VELOCITY = 20f;
 	protected const float SHIP_ACCELERATION = 40f;
-	protected const float SHIP_DECELERATION = 10f;
+	protected const float SHIP_DECELERATION = 40f;
 
 	public GameObject shotVFXPrefab;
 
@@ -75,10 +75,11 @@ public class CommonShipController : MonoBehaviour
 			player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
 		}
 		GameController.eventBus += ProcessCommand;
+		MasterAI.masterAIEvents += ProcessCommand;
 	}
 
 
-	public virtual void ProcessCommand(string command, object param)
+	protected virtual void ProcessCommand(string command, object param)
 	{
 		if (GameController.EXPLOSION_IMPACT_COMMAND == command) {
 			ExplosionImpact (param);
@@ -213,16 +214,16 @@ public class CommonShipController : MonoBehaviour
 
 		RemoveItemFromParent ();
 
-		GameController.eventBus -= ProcessCommand;
 		GameController.ExplosionImpact(transform.position);
 	}
 
 	protected virtual void DestroyShip(float duration) {
 		StartCoroutine(DelayedDestroy(gameObject, duration));
 	}
-
-	// Stub. Could be implemented in ancestor classes.
+		
 	protected virtual void RemoveItemFromParent() {
+		GameController.eventBus -= ProcessCommand;
+		MasterAI.masterAIEvents -= ProcessCommand;
 	}
 
 

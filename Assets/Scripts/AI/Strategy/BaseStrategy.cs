@@ -39,6 +39,10 @@ public abstract class BaseStrategy
 	}
 
 
+	public void Reinitialize() {
+		state = State.CreatePath;
+	}
+
 
 	public abstract void Perform();
 

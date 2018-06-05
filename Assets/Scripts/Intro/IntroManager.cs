@@ -14,20 +14,31 @@ public class IntroManager : MonoBehaviour {
 			introSceneNum++;
 
 			if (introSceneNum > LAST_INTRO_NUM) {
-				LoadMenu ();
+				LoadGameOrMenu ();
 				return;
 			}
 			SceneManager.LoadScene ("Intro" + introSceneNum.ToString());
 		}
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			LoadMenu ();
+			Utils.SaveIntroActivated ();
+			introSceneNum = 1;
+			SceneManager.LoadScene ("Menu");
 		}
 	}
 
 
-	void LoadMenu() {
-		Utils.SaveIntroState ();
-		SceneManager.LoadScene ("Menu");
+	void LoadGameOrMenu() {
+		string nextScene;
+		if (Utils.IsIntroStartedFromMenu ()) {
+			Utils.SaveIntroActivated ();
+			nextScene = "Menu";
+		} else {
+			nextScene = "Scene1";
+			Utils.SaveIntroActivated ();
+		}
+
+		introSceneNum = 1;
+		SceneManager.LoadScene (nextScene);
 	}
 }

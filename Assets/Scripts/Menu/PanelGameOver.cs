@@ -15,10 +15,10 @@ public class PanelGameOver : MonoBehaviour
 		CrossHairController.isEnabled = false;
 	}
 
-    public void Exit()
+    public void BackToMenu()
     {
 		GUIManager.UnsubscribeListeners ();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Menu");
 		GameManager.Instance.IsPause = true;
     }
 

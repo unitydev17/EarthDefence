@@ -8,6 +8,7 @@ public class Starter : MonoBehaviour {
 			SceneManager.LoadScene ("Menu");
 			return;
 		}
+		Cursor.visible = false;
 		SceneManager.LoadScene ("Intro1");
 	}
 
