@@ -20,9 +20,9 @@ public class CommonShipController : MonoBehaviour
 	private const float EXPLOSION_MAX_DISTANCE = 100f;
 	private const float EXPLOSION_FORCE = 300f;
 
-	public const float MAX_VELOCITY = 20f;
+	public const float MAX_VELOCITY = 20.5f;
 	protected const float SHIP_ACCELERATION = 40f;
-	protected const float SHIP_DECELERATION = 40f;
+	protected const float SHIP_DECELERATION = 20f;
 
 	public GameObject shotVFXPrefab;
 

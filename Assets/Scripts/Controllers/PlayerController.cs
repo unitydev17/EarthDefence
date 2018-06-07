@@ -117,7 +117,7 @@ public class PlayerController : CommonShipController
 
 	private void HandleInput()
 	{
-		if (Input.GetMouseButtonDown(0)) {
+		if (Input.GetMouseButton(0)) {
 			gunState = GunState.Fire;
 			chainFireNumber = 0;
 		}
