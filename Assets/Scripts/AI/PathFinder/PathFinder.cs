@@ -191,7 +191,6 @@ public sealed class PathFinder
 	private IEnumerator FindForwardRandomized (CollidersToExclude collidersToExclude, Vector3 start, Vector3 finish, System.Action<LinkedList<Vector3>> callback)
 	{
 		float period = 2f * Mathf.PI;
-		float delta = period / TRACE_SEGMENTS;
 
 		for (int i = 0; i < FORWARD_RANDOM_SEARCH_ITERATIONS; i++) {
 			int amplitude = (int)(Random.value * MAX_AMPLITUDE);

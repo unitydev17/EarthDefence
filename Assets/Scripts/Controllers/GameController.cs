@@ -26,7 +26,6 @@ public class GameController : MonoBehaviour {
 
 	public static GameObject root;
 	private GameObject earth;
-	private GameObject mars;
 	private GameObject moon;
 	private GameObject player;
 
@@ -75,8 +74,6 @@ public class GameController : MonoBehaviour {
 				earth = planet;
 			} else if (MOON_NAME == planet.name) {
 				moon = planet;
-			} else if (MARS_NAME == planet.name) {
-				mars = planet;
 			}
 		}
 	}
