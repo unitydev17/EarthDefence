@@ -9,7 +9,12 @@ public class Starter : MonoBehaviour {
 			return;
 		}
 		Cursor.visible = false;
-		SceneManager.LoadScene ("Intro1");
+
+		/* Use this for animation intro */
+		//SceneManager.LoadScene ("Intro1");
+
+		/* Use this for video intro */
+		SceneManager.LoadScene ("IntroVideo");
 	}
 
 }
