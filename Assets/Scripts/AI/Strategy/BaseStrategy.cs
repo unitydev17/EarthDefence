@@ -22,7 +22,8 @@ public abstract class BaseStrategy
 
 
 	protected Transform targetObj;
-	protected Transform obj;
+	protected Renderer targetObjRenderer;
+	protected Transform thisObj;
 	protected Path path;
 	protected State state;
 
@@ -49,24 +50,24 @@ public abstract class BaseStrategy
 
 	protected void RotateOnly(Vector3 toPoint)
 	{
-		Vector3 direction = toPoint - obj.position;
-		Vector3 newDir = Vector3.RotateTowards(obj.forward, direction, Time.deltaTime * ItemAI.ROTATION_SPEED, 0f);
-		obj.rotation = Quaternion.LookRotation(newDir);
+		Vector3 direction = toPoint - thisObj.position;
+		Vector3 newDir = Vector3.RotateTowards(thisObj.forward, direction, Time.deltaTime * ItemAI.ROTATION_SPEED, 0f);
+		thisObj.rotation = Quaternion.LookRotation(newDir);
 	}
 
 
 	protected void MoveRotate(Vector3 toPoint)
 	{
-		Vector3 direction = toPoint - obj.position;
+		Vector3 direction = toPoint - thisObj.position;
 
 		// rotate
-		Vector3 newDir = Vector3.RotateTowards(obj.forward, direction, 1f, 0f);
-		obj.rotation = Quaternion.Lerp(obj.rotation, Quaternion.LookRotation(newDir), Time.deltaTime * ItemAI.ROTATION_SPEED);
+		Vector3 newDir = Vector3.RotateTowards(thisObj.forward, direction, 1f, 0f);
+		thisObj.rotation = Quaternion.Lerp(thisObj.rotation, Quaternion.LookRotation(newDir), Time.deltaTime * ItemAI.ROTATION_SPEED);
 
 		if (!path.IsEmpty()) {
 			// move
 			Vector3 force = direction.normalized * ItemAI.FORCE;
-			var rigidbody = obj.GetComponent<Rigidbody>();
+			var rigidbody = thisObj.GetComponent<Rigidbody>();
 			rigidbody.AddForce(force, ForceMode.Impulse);
 
 			CheckNextPointAchieved();
@@ -76,7 +77,7 @@ public abstract class BaseStrategy
 
 	void CheckNextPointAchieved()
 	{
-		float currDist = Vector3.Distance(obj.position, path.GetCurrent());
+		float currDist = Vector3.Distance(thisObj.position, path.GetCurrent());
 
 		if (currDist <= ItemAI.BOUND_RADIUS) {
 			path.Next();
@@ -98,7 +99,7 @@ public abstract class BaseStrategy
 
 	protected bool CheckAttackDistanceReached()
 	{
-		float distance = Vector3.Distance(obj.position, targetObj.position);
+		float distance = Vector3.Distance(thisObj.position, targetObj.position);
 		return distance <= ItemAI.ATTACK_RADIUS;
 	}
 

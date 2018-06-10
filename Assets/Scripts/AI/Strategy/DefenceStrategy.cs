@@ -17,7 +17,7 @@ public class DefenceStrategy : BaseStrategy
 
 	public DefenceStrategy (MonoBehaviour mono, Transform obj, Transform defenceTarget)
 	{
-		this.obj = obj;
+		this.thisObj = obj;
 		this._defenceTarget = defenceTarget;
 		this._radius = GetRadius (defenceTarget) * 2f;
 		state = State.CreatePath;
@@ -85,7 +85,7 @@ public class DefenceStrategy : BaseStrategy
 	{
 		_repeatStart = Time.time;
 		state = State.WaitPathFind;
-		_pathFinder.FindPathRandomTraectory (obj, _defenceTarget.position, _radius, wayPoints => {
+		_pathFinder.FindPathRandomTraectory (thisObj, _defenceTarget.position, _radius, wayPoints => {
 			if (wayPoints.Count > 0) {
 				path.SetWayPoints (wayPoints);
 				state = State.MoveBase;
@@ -117,10 +117,16 @@ public class DefenceStrategy : BaseStrategy
 	// Follow enemy and fire if possible
 	void FollowEnemy_Logic ()
 	{
+		// in case enemy destroyed, move to defence point
+		if (IsTargetObjDestroyed ()) {
+			state = State.CreatePath;
+			return;
+		}
+			
 		// followed enemy has disappeared
 		if (CheckEnemyInvisible ()) {
 			state = State.WaitFollowPathFind;
-			_pathFinder.FindPath (obj, targetObj, wayPoints => {
+			_pathFinder.FindPath (thisObj, targetObj, wayPoints => {
 				if (wayPoints.Count > 0) {
 					path.SetWayPoints (wayPoints);
 					state = State.FollowPath;
@@ -153,7 +159,7 @@ public class DefenceStrategy : BaseStrategy
 
 	private bool CheckStopAttack ()
 	{
-		float distance = Vector3.Distance (obj.position, _defenceTarget.position);
+		float distance = Vector3.Distance (thisObj.position, _defenceTarget.position);
 		return distance > ItemAI.ATTACK_STOP_DISTANCE;
 	}
 
@@ -170,19 +176,20 @@ public class DefenceStrategy : BaseStrategy
 
 	private bool CheckFirePossible ()
 	{
-		float distance = Vector3.Distance (obj.position, targetObj.position);
+		float distance = Vector3.Distance (thisObj.position, targetObj.position);
 		bool firePossible = distance <= ItemAI.ATTACK_RADIUS;
-		firePossible &= _pathFinder.IsLookAtTarget (obj, targetObj);
+		firePossible &= _pathFinder.IsLookAtTarget (thisObj, targetObj);
 		return firePossible;
 	}
 
 
 	private bool CheckEnemyRadarDetect ()
 	{
-		Collider[] colliders = Physics.OverlapSphere (obj.position, ItemAI.VIEW_RADIUS);
+		Collider[] colliders = Physics.OverlapSphere (thisObj.position, ItemAI.VIEW_RADIUS);
 		foreach (Collider collider in colliders) {
 			if (IsEnemy (collider.tag)) {
 				targetObj = collider.transform;
+				targetObjRenderer = targetObj.GetComponent<Renderer> ();
 				return true;
 			}
 		}
@@ -198,7 +205,7 @@ public class DefenceStrategy : BaseStrategy
 
 	private bool CheckEnemyVisible ()
 	{
-		return _pathFinder.IsTargetVisible (obj.position, targetObj);
+		return _pathFinder.IsTargetVisible (thisObj.position, targetObj);
 	}
 
 
@@ -207,4 +214,8 @@ public class DefenceStrategy : BaseStrategy
 		return !CheckEnemyVisible ();
 	}
 
+
+	private bool IsTargetObjDestroyed() {
+		return !targetObjRenderer.isVisible;
+	}
 }

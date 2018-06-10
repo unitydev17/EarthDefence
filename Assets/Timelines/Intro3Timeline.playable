@@ -250,11 +250,11 @@ MonoBehaviour:
   m_Parent: {fileID: 11400000}
   m_Children: []
   m_Clips:
-  - m_Start: 2.15
+  - m_Start: 3.7161176204681396
     m_ClipIn: 0
-    m_Asset: {fileID: 114520936292341202}
-    m_UnderlyingAsset: {fileID: 8300000, guid: 8a0eacc3471c96f43988984d108b19f3, type: 3}
-    m_Duration: 4.780408163265306
+    m_Asset: {fileID: 114967688692778412}
+    m_UnderlyingAsset: {fileID: 8300000, guid: 766e66d0f5972324da38e660af739af5, type: 3}
+    m_Duration: 2.742857142857143
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114228638496236020}
     m_EaseInDuration: 0
@@ -306,7 +306,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Story_2
+    m_DisplayName: Story_2_en
     m_Version: 1
 --- !u!114 &114246765363339112
 MonoBehaviour:
@@ -553,20 +553,6 @@ MonoBehaviour:
   m_ApplyOffsets: 0
   m_AvatarMask: {fileID: 0}
   m_ApplyAvatarMask: 1
---- !u!114 &114520936292341202
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 8a0eacc3471c96f43988984d108b19f3, type: 3}
-  m_Loop: 0
-  m_bufferingTime: 0.1
 --- !u!114 &114663154547081882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1049,3 +1035,17 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: zapsplat_science_fiction_alarm_loop_020_12618
     m_Version: 1
+--- !u!114 &114967688692778412
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: 766e66d0f5972324da38e660af739af5, type: 3}
+  m_Loop: 0
+  m_bufferingTime: 0.1

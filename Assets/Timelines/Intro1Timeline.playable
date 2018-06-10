@@ -20,6 +20,20 @@ MonoBehaviour:
   m_EditorSettings:
     fps: 60
   m_DurationMode: 0
+--- !u!114 &114030357849716754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: 085da424da88c99489b6f70e83fe6868, type: 3}
+  m_Loop: 0
+  m_bufferingTime: 0.1
 --- !u!114 &114034954671765936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -38,11 +52,11 @@ MonoBehaviour:
   m_Parent: {fileID: 11400000}
   m_Children: []
   m_Clips:
-  - m_Start: 4.833333333333333
+  - m_Start: 4.9359331130981445
     m_ClipIn: 0
-    m_Asset: {fileID: 114848783141509822}
-    m_UnderlyingAsset: {fileID: 8300000, guid: 1a6b545616dc1a3459c372629a68ed94, type: 3}
-    m_Duration: 15.177142857142858
+    m_Asset: {fileID: 114266624418599448}
+    m_UnderlyingAsset: {fileID: 8300000, guid: 085da424da88c99489b6f70e83fe6868, type: 3}
+    m_Duration: 10.292244897959185
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114034954671765936}
     m_EaseInDuration: 0
@@ -94,7 +108,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Story_0
+    m_DisplayName: Story_0_en
     m_Version: 1
 --- !u!114 &114058198933573182
 MonoBehaviour:
@@ -183,6 +197,20 @@ MonoBehaviour:
   m_ApplyOffsets: 0
   m_AvatarMask: {fileID: 0}
   m_ApplyAvatarMask: 1
+--- !u!114 &114266624418599448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: 085da424da88c99489b6f70e83fe6868, type: 3}
+  m_Loop: 0
+  m_bufferingTime: 0.1
 --- !u!114 &114284181802489876
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -290,17 +318,3 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: never_late_smooth_jazz_soft
     m_Version: 1
---- !u!114 &114848783141509822
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 1a6b545616dc1a3459c372629a68ed94, type: 3}
-  m_Loop: 0
-  m_bufferingTime: 0.1

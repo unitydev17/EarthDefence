@@ -108,20 +108,6 @@ MonoBehaviour:
   m_ApplyOffsets: 0
   m_AvatarMask: {fileID: 0}
   m_ApplyAvatarMask: 1
---- !u!114 &114153539156469452
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: f540adb98574d20409d2de5b3abc74c0, type: 3}
-  m_Loop: 0
-  m_bufferingTime: 0.1
 --- !u!114 &114173463403982326
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,7 +195,7 @@ MonoBehaviour:
   m_ApplyOffsets: 0
   m_AvatarMask: {fileID: 0}
   m_ApplyAvatarMask: 1
---- !u!114 &114332748952596286
+--- !u!114 &114410177285826948
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -220,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: a1feebaf0fb56204c9dfa838f1adc19c, type: 3}
+  m_Clip: {fileID: 8300000, guid: 3aaea97330a95b146b0a0f619a407a80, type: 3}
   m_Loop: 0
   m_bufferingTime: 0.1
 --- !u!114 &114446994740819550
@@ -334,11 +320,11 @@ MonoBehaviour:
   m_Parent: {fileID: 11400000}
   m_Children: []
   m_Clips:
-  - m_Start: 3.2591216564178467
+  - m_Start: 3.2240419387817383
     m_ClipIn: 0
-    m_Asset: {fileID: 114332748952596286}
-    m_UnderlyingAsset: {fileID: 8300000, guid: a1feebaf0fb56204c9dfa838f1adc19c, type: 3}
-    m_Duration: 2.089750566893424
+    m_Asset: {fileID: 114410177285826948}
+    m_UnderlyingAsset: {fileID: 8300000, guid: 3aaea97330a95b146b0a0f619a407a80, type: 3}
+    m_Duration: 2.403265306122449
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114629109827452248}
     m_EaseInDuration: 0
@@ -365,7 +351,19 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_MixOutCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -378,13 +376,13 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Story_4
+    m_DisplayName: Story_4_en
     m_Version: 1
-  - m_Start: 5.683333333333334
+  - m_Start: 5.989367485046387
     m_ClipIn: 0
-    m_Asset: {fileID: 114153539156469452}
-    m_UnderlyingAsset: {fileID: 8300000, guid: f540adb98574d20409d2de5b3abc74c0, type: 3}
-    m_Duration: 8.02175
+    m_Asset: {fileID: 114916506233280846}
+    m_UnderlyingAsset: {fileID: 8300000, guid: b7e13bd203097784ab3c19ab63ff8e8f, type: 3}
+    m_Duration: 7.420958333333333
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114629109827452248}
     m_EaseInDuration: 0
@@ -393,7 +391,19 @@ MonoBehaviour:
     m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -424,7 +434,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Story_5
+    m_DisplayName: Story_5_en
     m_Version: 1
 --- !u!114 &114685702868658896
 MonoBehaviour:
@@ -443,6 +453,20 @@ MonoBehaviour:
   m_UseTrackMatchFields: 0
   m_MatchTargetFields: 63
   m_RemoveStartOffset: 1
+--- !u!114 &114916506233280846
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: b7e13bd203097784ab3c19ab63ff8e8f, type: 3}
+  m_Loop: 0
+  m_bufferingTime: 0.1
 --- !u!114 &114921412335751554
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -27,12 +27,13 @@ public class PlayerController : CommonShipController
 	public const float BULLET_SPAWN_DISTANCE = 0.5f;
 
 	private const float SHIP_STOPPED_SPEED = 1f;
-	private const int CHAIN_FIRE_NUMBERS = 2;
+	private const int CHAIN_FIRE_NUMBERS = 1;
 	private const float CHAIN_FIRE_DELAY = 0.1f;
+	private const float SHIP_ROTATE_SPEED = 1.5f;
 
 
-	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
-	private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
+	private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2.461f);
+	private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2.461f);
 	private float rotationY;
 
 	private float startChainTime;
@@ -102,7 +103,7 @@ public class PlayerController : CommonShipController
 				
 			if (Time.time - startChainTime > CHAIN_FIRE_DELAY) {
 
-				if (++chainFireNumber == CHAIN_FIRE_NUMBERS) {
+				if (chainFireNumber++ == CHAIN_FIRE_NUMBERS) {
 					gunState = GunState.Idle;
 					return;
 				}
@@ -133,12 +134,12 @@ public class PlayerController : CommonShipController
 
 		// Right incline
 		if (Input.GetKey(KeyCode.D)) {
-			transform.RotateAround(transform.position, transform.forward, -1f);
+			transform.RotateAround(transform.position, transform.forward, -SHIP_ROTATE_SPEED);
 		}
 
 		// Left incline
 		if (Input.GetKey(KeyCode.A)) {
-			transform.RotateAround(transform.position, transform.forward, 1f);
+			transform.RotateAround(transform.position, transform.forward, SHIP_ROTATE_SPEED);
 		}		
 	}
 

@@ -20,20 +20,6 @@ MonoBehaviour:
   m_EditorSettings:
     fps: 60
   m_DurationMode: 0
---- !u!114 &114216904380497952
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 0eee99d3457be01448b3ff230594bffe, type: 3}
-  m_Loop: 0
-  m_bufferingTime: 0.1
 --- !u!114 &114404580299220694
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,6 +127,20 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: music_zapsplat_the_boss
     m_Version: 1
+--- !u!114 &114604923573456094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: 322fcdfbf0c667546b0435514ea97d48, type: 3}
+  m_Loop: 0
+  m_bufferingTime: 0.1
 --- !u!114 &114676704247856904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,11 +159,11 @@ MonoBehaviour:
   m_Parent: {fileID: 11400000}
   m_Children: []
   m_Clips:
-  - m_Start: 0
+  - m_Start: 0.00000001047993780645129
     m_ClipIn: 0
-    m_Asset: {fileID: 114216904380497952}
-    m_UnderlyingAsset: {fileID: 8300000, guid: 0eee99d3457be01448b3ff230594bffe, type: 3}
-    m_Duration: 21.812244897959182
+    m_Asset: {fileID: 114604923573456094}
+    m_UnderlyingAsset: {fileID: 8300000, guid: 322fcdfbf0c667546b0435514ea97d48, type: 3}
+    m_Duration: 19.22612244897959
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114676704247856904}
     m_EaseInDuration: 0
@@ -215,7 +215,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Story_1
+    m_DisplayName: Story_1_en
     m_Version: 1
 --- !u!114 &114765749564143362
 MonoBehaviour:

@@ -19,7 +19,7 @@ MonoBehaviour:
   m_EditorSettings:
     fps: 60
   m_DurationMode: 0
---- !u!114 &114042664667787986
+--- !u!114 &114187078479546502
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -30,7 +30,7 @@ MonoBehaviour:
   m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 6cb642f106fd2a74b8004c5f1c6621f8, type: 3}
+  m_Clip: {fileID: 8300000, guid: b8a21846788ab154abea3f857a1de9d4, type: 3}
   m_Loop: 0
   m_bufferingTime: 0.1
 --- !u!114 &114468556549678792
@@ -65,11 +65,11 @@ MonoBehaviour:
   m_Parent: {fileID: 11400000}
   m_Children: []
   m_Clips:
-  - m_Start: 3.6166666666666667
+  - m_Start: 3.5897130966186523
     m_ClipIn: 0
-    m_Asset: {fileID: 114042664667787986}
-    m_UnderlyingAsset: {fileID: 8300000, guid: 6cb642f106fd2a74b8004c5f1c6621f8, type: 3}
-    m_Duration: 6.791836734693877
+    m_Asset: {fileID: 114187078479546502}
+    m_UnderlyingAsset: {fileID: 8300000, guid: b8a21846788ab154abea3f857a1de9d4, type: 3}
+    m_Duration: 4.649795918367347
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114588646093067770}
     m_EaseInDuration: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Story_6
+    m_DisplayName: Story_6_en
     m_Version: 1
 --- !u!114 &114799916617289454
 MonoBehaviour:
