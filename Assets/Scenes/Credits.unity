@@ -571,16 +571,16 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 537665746}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.71167, y: -209.0965, z: 0}
+  m_LocalPosition: {x: 4.7117004, y: -197.69617, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1725966310}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.26000002, y: 0.17439497}
-  m_AnchorMax: {x: 0.74869937, y: 0.27769747}
-  m_AnchoredPosition: {x: -1.2299995, y: 1.300003}
-  m_SizeDelta: {x: 2.0300007, y: 0.17000008}
+  m_AnchorMin: {x: 0.26000002, y: 0.20330209}
+  m_AnchorMax: {x: 0.75089556, y: 0.27769747}
+  m_AnchoredPosition: {x: -2.7299995, y: 1.6000004}
+  m_SizeDelta: {x: -1, y: -0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &537665748
 MonoBehaviour:
@@ -614,7 +614,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Music: looking over back hill by David-Gwyn Jones https://parkdaleproductions.bandcamp.com/music
+  m_Text: 'Music:
 
     "War drums" theme by Sclolex (freesound.org)'
 --- !u!222 &537665749
@@ -1681,7 +1681,7 @@ GameObject:
   - component: {fileID: 2008617000}
   - component: {fileID: 2008616999}
   m_Layer: 5
-  m_Name: Sci-fi hall model (1)
+  m_Name: Sci-fi IMPERIAL Corvette F3 model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
