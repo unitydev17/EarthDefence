@@ -384,5 +384,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3225135b1a39c84f9732efafab83dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotVFXPrefab: {fileID: 1418848687703462, guid: 5852a92c25f90c64ebed122bece45f60,
+  shotVFXPrefab: {fileID: 1407074117103836, guid: 993c2244f3d6b85479fb7d39e3be9db3,
     type: 2}

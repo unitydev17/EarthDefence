@@ -15,7 +15,7 @@ public class ItemAI : CommonShipController
 	public const float ATTACK_RADIUS = 100f;
 	public const float ATTACK_STOP_DISTANCE = 200f;
 
-	public const float FIRE_FREQUENCY = 1f;
+	public const float FIRE_FREQUENCY = 0.5f;
 
 	//private Vector3 rightGunPosition = new Vector3(1.967f, 0.276f, 2f);
 	//private Vector3 leftGunPosition = new Vector3(-1.967f, 0.276f, 2f);
