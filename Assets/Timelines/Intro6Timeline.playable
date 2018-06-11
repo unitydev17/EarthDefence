@@ -30,7 +30,7 @@ MonoBehaviour:
   m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: b8a21846788ab154abea3f857a1de9d4, type: 3}
+  m_Clip: {fileID: 8300000, guid: 8892536bf99921749a5633b31e232b79, type: 3}
   m_Loop: 0
   m_bufferingTime: 0.1
 --- !u!114 &114468556549678792

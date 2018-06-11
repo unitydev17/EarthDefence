@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 3aaea97330a95b146b0a0f619a407a80, type: 3}
+  m_Clip: {fileID: 8300000, guid: 1bdec8b87c595e147baf7fc1d4199c2d, type: 3}
   m_Loop: 0
   m_bufferingTime: 0.1
 --- !u!114 &114446994740819550
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: b7e13bd203097784ab3c19ab63ff8e8f, type: 3}
+  m_Clip: {fileID: 8300000, guid: b6809b4b2da305e4abe73a2ca2047db8, type: 3}
   m_Loop: 0
   m_bufferingTime: 0.1
 --- !u!114 &114921412335751554

@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: -1977359656, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 322fcdfbf0c667546b0435514ea97d48, type: 3}
+  m_Clip: {fileID: 8300000, guid: d62a022d882666c44865c3db7b7a8548, type: 3}
   m_Loop: 0
   m_bufferingTime: 0.1
 --- !u!114 &114676704247856904

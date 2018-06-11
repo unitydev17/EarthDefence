@@ -2111,8 +2111,8 @@ MonoBehaviour:
   fireClip: {fileID: 8300000, guid: e811ff26daba80541b2b04c91e4fcb08, type: 3}
   shipShotedClip: {fileID: 8300000, guid: 708797caa7e481643936211964100b40, type: 3}
   enemyExplosionClip: {fileID: 8300000, guid: 87109a20d3bc79c44955302f317f5a42, type: 3}
-  storyRetryClip: {fileID: 8300000, guid: 5a6ee9ca8b9c0754988ce80af73897e9, type: 3}
-  storyWinClip: {fileID: 8300000, guid: 1b98d5d9b446a2a4f8e5a2de81f7d53c, type: 3}
+  storyRetryClip: {fileID: 8300000, guid: 94789ca5e33ce6b489d4dfb866e9f45e, type: 3}
+  storyWinClip: {fileID: 8300000, guid: 51f1691b0c749d841ab30789ae5617c9, type: 3}
   battleMusicClip: {fileID: 8300000, guid: 836a29dc43c32d641a8427e349165193, type: 3}
 --- !u!4 &1238579896
 Transform:
