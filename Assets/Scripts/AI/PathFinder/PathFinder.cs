@@ -18,7 +18,7 @@ public sealed class PathFinder
 	}
 
 
-	private const float WAYPOINT_SECTION_RADIUS = 1f;
+	private const float WAYPOINT_SECTION_RADIUS = 0.5f;
 	private const int TRACE_SEGMENTS = 16;
 	private const float MAX_AMPLITUDE = 128f;
 	private const int LAYER_IGNORE_RAYCAST = 2;
