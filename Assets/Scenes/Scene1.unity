@@ -502,7 +502,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 424164292}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.0999985, y: -188.98965, z: 0}
+  m_LocalPosition: {x: 4.0999985, y: -121.11854, z: 0}
   m_LocalScale: {x: 1.5250185, y: 1.2890564, z: 1}
   m_Children: []
   m_Father: {fileID: 643820337}
@@ -623,7 +623,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 434879571}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.0999985, y: -188.98965, z: 0}
+  m_LocalPosition: {x: 4.0999985, y: -121.11854, z: 0}
   m_LocalScale: {x: 1.5250185, y: 1.2890564, z: 1}
   m_Children: []
   m_Father: {fileID: 1054815926}
@@ -888,7 +888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2549350b7c933744da2411f5ac36af4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_ITEMS_COUNT: 15
+  MAX_ITEMS_COUNT: 14
   SPAWN_TIME: 1
   spawnPointObj: {fileID: 1705911885}
   defenceObj: {fileID: 0}
@@ -1672,7 +1672,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1019578281}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2416687, y: 220.8844, z: 0}
+  m_LocalPosition: {x: 0.5817337, y: 138.05273, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 767184460}
@@ -2050,7 +2050,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1197164552}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -580.23, y: 367.002, z: 0}
+  m_LocalPosition: {x: -217.23, y: 223.00201, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1389504444}
@@ -2152,7 +2152,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1285322144}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.0999985, y: -32.22, z: 0}
+  m_LocalPosition: {x: 4.0999985, y: -20.699997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1054815926}
@@ -2680,7 +2680,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1468702021}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 683, y: 384, z: 0}
+  m_LocalPosition: {x: 320, y: 240, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 383288386}
@@ -2854,7 +2854,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1622190445}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.0999985, y: -32.22, z: 0}
+  m_LocalPosition: {x: 4.0999985, y: -20.699997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 643820337}
@@ -3722,7 +3722,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2047523897}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.100006, y: 222.86801, z: 0}
+  m_LocalPosition: {x: 13.100006, y: 143.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 643820337}
@@ -3813,7 +3813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MAX_ITEMS_COUNT: 20
-  SPAWN_TIME: 1
+  SPAWN_TIME: 1.5
   spawnPointObj: {fileID: 136255412}
   defenceObj: {fileID: 2017974601}
   attackObj: {fileID: 0}
@@ -3841,7 +3841,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2131977713}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.100006, y: 222.86801, z: 0}
+  m_LocalPosition: {x: 13.100006, y: 143.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1054815926}
